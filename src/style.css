@@ -1,0 +1,31 @@
+/* Remove default margin and padding */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+  }
+  
+.navbar a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 16px 80px;
+    text-decoration: none;
+    font-size: 20px;
+    border-right: 3px solid blue;
+}
+  
+.navbar a:hover {
+    background-color: white;
+    color: black;
+}
+  
+.navbar a.active {
+    background-color: red;
+    color: white;
+    border-right: 3px solid red;
+}
