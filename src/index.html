@@ -18,6 +18,36 @@
     <a href="./teambuilder.html">Team Builder</a>
     <a href="./battlesimulator.html">Battle Simulator</a>
   </div>
+    
+  <!-- Hero Section with SVG Poké Ball -->
+  <div class="hero">
+    <div class="battle-button">
+        <button class="hero-button">Start Battle</button>
+    </div>
+
+    <!-- Full-width horizontal line -->
+    <svg class="horizontal-line-svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+      <line x1="0" y1="5" x2="100" y2="5" stroke="black" stroke-width="10"/>
+    </svg>
+
+    <!-- Poké Ball -->
+    <div class="pokeball-container">
+        <svg class="pokeball-svg" viewBox="0 0 200 200">
+            <!-- Top Half -->
+            <path d="M 10,100 A 90,90 0 0,1 190,100" fill="red" stroke="black" stroke-width="10"/>
+            <!-- Bottom Half -->
+            <path d="M 10,100 A 90,90 0 0,0 190,100" fill="white" stroke="black" stroke-width="10"/>
+            <!-- Internal Horizontal Line -->
+            <line x1="10" y1="100" x2="190" y2="100" stroke="black" stroke-width="10"/>
+            <!-- Center Circle -->
+            <circle cx="100" cy="100" r="25" fill="white" stroke="black" stroke-width="10"/>
+        </svg>
+    </div>
+
+    <div class="team-button">
+        <button class="hero-button">Team Builder</button>
+    </div>
+</div>
 </body>
 
 </html>
