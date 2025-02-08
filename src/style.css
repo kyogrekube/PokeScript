@@ -7,34 +7,40 @@ body, html {
 
 /* Navigation Bar */
 .navbar {
-    background-color: #333;
+    background-color: black;
     overflow: hidden;
     display: flex;
-    border-bottom: 3px solid blue; /* Do want to keep this? */
+    flex-direction: row;
 }
 
+/* Navigation bar items */
 .navbar a {
+    position: relative;
     color: white;
     text-align: center;
-    padding: 16px 40px;
+    padding: 16px 0px;
     text-decoration: none;
-    font-size: 20px;
-    border-right: 3px solid blue;
+    font-size: 110%;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    margin-left: 5%;
 }
 
-.navbar a:last-child {
-    border-right: none;
-}
-
-.navbar a:hover {
+.navbar a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 0;
+    height: 2px;
     background-color: white;
-    color: black;
+    transition: width 0.3s ease, left 0.3s ease;
 }
 
-.navbar a.active {
-    background-color: red;
-    color: white;
-    border-right: 3px solid red; /* Prevents blue border from being on the right */
+.navbar a:hover::after,
+.navbar a.active::after { /* Keeps underline on active page */
+    width: 100%;
+    left: 0;
 }
 
 /* Content flex box for page, holds everything below the navbar */
@@ -61,12 +67,12 @@ body, html {
 
 /* Start buttons on home page */
 .start-button {
-    padding: 10px 20px;
+    padding: 20px 40px;
     font-size: 18px;
-    margin: 20px 0;
-    background-color: #fff;
-    border: 2px solid #333;
-    border-radius: 5px;
+    margin: 4% 0;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 16px;
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -75,12 +81,40 @@ body, html {
     transform: scale(1.05);
 }
 
-/* Pokeball on homepage */
+/* Animates the pokeball wrapper */
+@keyframes rollIn {
+    0% {
+        transform: translateX(100vw) rotate(0deg);
+    }
+    100% {
+        transform: translateX(0) rotate(720deg);
+    }
+}
+
+/* Wrapper for the pokeball (needed to use multiple effects at once) */
+.pokeball-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rollIn 1.5s ease-out forwards;
+}
+
+/* Pokeball*/
 .pokeball {
     height: 25vmin;
     width: 25vmin;
     border-radius: 50%;
     border: 1.875vmin solid black;
     background-image:
-    radial-gradient(white 20%, white 20%, black 20%, black 30%, transparent 30%, transparent), linear-gradient(red 46%, black 46%, black 54%, white 54%);
-  }
+        radial-gradient(white 20%, white 20%, black 20%, black 30%, transparent 30%, transparent), 
+        linear-gradient(red 46%, black 46%, black 54%, white 54%);
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Allows the pokeball to expand on hover */
+.pokeball:hover {
+    transform: scale(1.2);
+}
+
+
