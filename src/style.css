@@ -1,59 +1,27 @@
-/* General Styles */
 body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
 }
 
-/* Navigation Bar */
-.navbar {
-    background-color: black;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-}
-
-/* Navigation bar items */
-.navbar a {
-    position: relative;
-    color: white;
-    text-align: center;
-    padding: 16px 0px;
-    text-decoration: none;
-    font-size: 110%;
-    transition: color 0.3s ease;
-    white-space: nowrap;
-    margin-left: 5%;
-}
-
-.navbar a::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 5px;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition: width 0.3s ease, left 0.3s ease;
-}
-
-.navbar a:hover::after,
-.navbar a.active::after { /* Keeps underline on active page */
-    width: 100%;
-    left: 0;
-}
-
-/* Content flex box for page, holds everything below the navbar */
+/* Content flex box for page*/
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 70px);
+    height: 100vh;
     position: relative;
 }
 
-/* Horizontal line in center of page*/
+.content img {
+    width: 600px;
+    height: auto;
+    top: 10%;
+    position: absolute;
+}
+
+/* Horizontal line in center of page */
 .content::before {
     content: '';
     position: absolute;
@@ -62,26 +30,10 @@ body, html {
     width: 100%;
     height: 1.875vmin;
     background-color: black;
-    z-index: -1; /* Place the line behind1 Pokeball */
+    z-index: -1; /* Place the line behind Pokeball */
 }
 
-/* Start buttons on home page */
-.start-button {
-    padding: 20px 40px;
-    font-size: 18px;
-    margin: 4% 0;
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.start-button:hover {
-    transform: scale(1.05);
-}
-
-/* Animates the pokeball wrapper */
+/* Rolling in from the right animation */
 @keyframes rollIn {
     0% {
         transform: translateX(100vw) rotate(0deg);
@@ -99,7 +51,7 @@ body, html {
     animation: rollIn 1.5s ease-out forwards;
 }
 
-/* Pokeball*/
+/* Pokeball */
 .pokeball {
     height: 25vmin;
     width: 25vmin;
@@ -117,4 +69,38 @@ body, html {
     transform: scale(1.2);
 }
 
+/* Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
+/* Float up/down animation */
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Text under Pokeball */
+.start-text {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    opacity: 0;
+    animation: fadeIn 2s ease-in forwards 1.5s, floatUpDown 2.5s ease-in-out infinite 3.5s;
+    bottom: 20%;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
