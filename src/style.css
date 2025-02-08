@@ -33,16 +33,6 @@ body, html {
     z-index: -1; /* Place the line behind Pokeball */
 }
 
-/* Rolling in from the right animation */
-@keyframes rollIn {
-    0% {
-        transform: translateX(100vw) rotate(0deg);
-    }
-    100% {
-        transform: translateX(0) rotate(720deg);
-    }
-}
-
 /* Wrapper for the pokeball (needed to use multiple effects at once) */
 .pokeball-wrapper {
     display: flex;
@@ -62,11 +52,25 @@ body, html {
         linear-gradient(red 46%, black 46%, black 54%, white 54%);
     position: relative;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 /* Allows the pokeball to expand on hover */
 .pokeball:hover {
     transform: scale(1.2);
+}
+
+/* Text under Pokeball */
+.start-text {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    opacity: 0;
+    animation: fadeIn 2s ease-in forwards 1.5s, floatUpDown 2.5s ease-in-out infinite 3.5s;
+    bottom: 20%;
+    position: absolute;
+    margin: 0;
+    padding: 0;
 }
 
 /* Fade-in animation */
@@ -92,15 +96,27 @@ body, html {
     }
 }
 
-/* Text under Pokeball */
-.start-text {
-    font-size: 40px;
-    font-weight: bold;
-    color: black;
-    opacity: 0;
-    animation: fadeIn 2s ease-in forwards 1.5s, floatUpDown 2.5s ease-in-out infinite 3.5s;
-    bottom: 20%;
-    position: absolute;
-    margin: 0;
-    padding: 0;
+/* Rolling in from the right animation to the middle animation */
+@keyframes rollIn {
+    0% {
+        transform: translateX(100vw) rotate(0deg);
+    }
+    100% {
+        transform: translateX(0) rotate(720deg);
+    }
+}
+
+/* Rolling out to the left from the middle animation */
+@keyframes rollOut {
+    0% {
+        transform: translateX(0) rotate(720deg);
+    }
+    100% {
+        transform: translateX(-100vw) rotate(1440deg);
+    }
+}
+
+/* Class that when added triggers roll-out animation */
+.roll-out {
+    animation: rollOut 1.5s ease-in forwards;
 }
