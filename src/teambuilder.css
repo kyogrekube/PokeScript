@@ -40,16 +40,6 @@ body, html {
     justify-content: space-evenly;
 }
 
-.centerTeamsContainer {
-    display: flex;
-    /*background-color: green;*/
-    width: 20%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
 .rightTeamsContainer {
     display: flex;
     /*background-color: yellow;*/
@@ -72,13 +62,95 @@ body, html {
     justify-content: space-evenly;
 }
 
+.rightTeamsContainer .teamMemberCard {
+    transform: translateX(100%);
+    animation: slideInFromRight 0.8s ease-out forwards;
+}
+
+.leftTeamsContainer .teamMemberCard {
+    transform: translateX(-100%);
+    animation: slideInFromLeft 0.8s ease-out forwards;
+}
+
 .teamMemberCard {
     display: flex;
     flex-direction: column;
     border: 3px solid black;
     border-radius: 16px;
-    height: 250px; /* How do we make this not scale when zooming into the page? */
+    height: 280px;
     width: 28%;
+    opacity: 0;
+}
+
+.teamMemberCard p {
+    margin: 0;
+    padding: 0;
+    margin-left: 5%;
+}
+
+/* Apply animation delays to stagger the entrance of cards through a one by one effect */
+.leftUpperTeamsContainer .teamMemberCard:nth-child(1),
+.rightUpperTeamsContainer .teamMemberCard:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.leftUpperTeamsContainer .teamMemberCard:nth-child(2),
+.rightUpperTeamsContainer .teamMemberCard:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.leftUpperTeamsContainer .teamMemberCard:nth-child(3),
+.rightUpperTeamsContainer .teamMemberCard:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.leftLowerTeamsContainer .teamMemberCard:nth-child(1),
+.rightLowerTeamsContainer .teamMemberCard:nth-child(1) {
+    animation-delay: 0.8s;
+}
+
+.leftLowerTeamsContainer .teamMemberCard:nth-child(2),
+.rightLowerTeamsContainer .teamMemberCard:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.leftLowerTeamsContainer .teamMemberCard:nth-child(3),
+.rightLowerTeamsContainer .teamMemberCard:nth-child(3) {
+    animation-delay: 1.2s;
+}
+
+/* Animation for team member cards to slide in the from the right */
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation for team member cards to slide in from the left */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.centerTeamsContainer {
+    display: flex;
+    /*background-color: green;*/
+    width: 20%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .zigzag {
@@ -87,6 +159,7 @@ body, html {
     animation: dash 2s ease-out forwards;
 }
 
+/* Animation that leaves behind the trail for the zigzag */
 @keyframes dash {
     to {
         stroke-dashoffset: 0;
@@ -97,4 +170,102 @@ svg {
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+.edit-team-button {
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+.edit-team-button:hover {
+    background-color: lightgray;
+}
+
+.player_team_button {
+    position: absolute;
+    bottom: 85%;
+    right: 50%;
+    animation-delay: 0.5s; /* Slight delay for smooth effect */
+}
+
+.ai_team_button {
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    animation-delay: 1s; /* Delays longer than player button */
+}
+
+/* Animation that allows the buttons to fade in */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.logo1, .logo2 {
+    position: absolute;
+    height: 50px;
+    width: auto;
+}
+
+.logo1 {
+    top: 40%;
+    right: 5%;
+    animation-delay: 0.2s; /* Waits until slightly after page loadup */
+    animation: slideInFromAbove 0.8s ease-out forwards;
+}
+
+.logo2 {
+    bottom: 40%;
+    left: 5%;
+    animation-delay: 0.4s; /* Waits until slightly after logo1 animation */
+    animation: slideInFromBelow 0.8s ease-out forwards;
+}
+
+/* Animation used for logo to slide in from above */
+@keyframes slideInFromAbove {
+    0% {
+        opacity: 0;
+        transform: translateY(-300px);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(15px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Animation used for logo to slide in from below */
+@keyframes slideInFromBelow {
+    0% {
+        opacity: 0;
+        transform: translateY(300px);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
