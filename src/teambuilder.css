@@ -1,0 +1,100 @@
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Possible color gradients for background: */
+    /*background-color: #00DBDE;
+    background-image: linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%);*/
+    /*background-color: #21D4FD;
+    background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);*/
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 98%;
+    position: fixed;
+}
+
+.leftTeamsContainer {
+    display: flex;
+    /*background-color: red;*/
+    width: 40%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.leftUpperTeamsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.leftLowerTeamsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.centerTeamsContainer {
+    display: flex;
+    /*background-color: green;*/
+    width: 20%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.rightTeamsContainer {
+    display: flex;
+    /*background-color: yellow;*/
+    width: 40%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+}
+
+.rightUpperTeamsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.rightLowerTeamsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.teamMemberCard {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid black;
+    border-radius: 16px;
+    height: 250px; /* How do we make this not scale when zooming into the page? */
+    width: 28%;
+}
+
+.zigzag {
+    stroke-dasharray: 2100;
+    stroke-dashoffset: -2100;
+    animation: dash 2s ease-out forwards;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
