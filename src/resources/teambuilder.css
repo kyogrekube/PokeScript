@@ -184,6 +184,7 @@ svg {
 
 .edit-team-button:hover {
     background-color: lightgray;
+    transform: scale(1.1);
 }
 
 .player_team_button {
