@@ -39,6 +39,8 @@ body, html {
     border: 3px solid black;
     border-radius: 16px;
     background-color: rgb(181, 179, 179);
+    /* Bottom and then leftside boxshadows */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .editingContainer {
@@ -69,6 +71,9 @@ body, html {
     text-align: center;
     font-size: 150%;
     justify-content: space-between;
+    /* Bottom and then leftside boxshadows */
+    /* DO WE WANT THIS???*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 }
 
 .teamMemberStatsContainer {
@@ -124,6 +129,8 @@ body, html {
     flex-direction: column;
     border: 3px solid black;
     border-radius: 16px;
+    /* Bottom and then leftside boxshadows */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .logoContainer {
@@ -186,7 +193,7 @@ body, html {
     flex-direction: column;
     overflow-y: auto;
     border: 3px solid black;
-    border-radius: 8px;
+    border-radius: 16px;
     padding: 10px;
     background-color: white;
     gap: 5px;
