@@ -12,7 +12,7 @@ body, html {
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 98%;
+    width: 100%;
     position: fixed;
 }
 
@@ -186,6 +186,7 @@ svg {
 
 .edit-team-button:hover {
     background-color: lightgray;
+    transform: scale(1.1);
 }
 
 .player_team_button {
