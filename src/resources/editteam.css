@@ -109,7 +109,7 @@ body, html {
     transform: scale(1.1);
 }
 
-.editingPopup {
+.innerEditingContainer {
     height: 90%;
     width: 90%;
     background-color: rgb(181, 179, 179);
@@ -117,4 +117,17 @@ body, html {
     flex-direction: column;
     border: 3px solid black;
     border-radius: 16px;
+}
+
+.logoContainer {
+    display: flex;
+    height: 20%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoContainer img{
+    width: 50%;
+    height: auto;
 }
