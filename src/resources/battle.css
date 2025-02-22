@@ -34,6 +34,7 @@ body, html {
 
 .leftTopOverviewBox {
     display: flex;
+    background-color: blue;
     height: 100%;
     width: 10%;
     position: space-evenly;
@@ -41,6 +42,7 @@ body, html {
 
 .centerBattleFrame {
     display: flex;
+    background-color: black;
     height: 100%;
     width: 80%;
     position: space-evenly;
@@ -48,6 +50,7 @@ body, html {
 
 .rightTopOverviewBox {
     display: flex;
+    background-color: blue;
     height: 100%;
     width: 10%;
     position: space-evenly;
