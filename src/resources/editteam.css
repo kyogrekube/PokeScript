@@ -94,17 +94,24 @@ body, html {
     margin-bottom: 30%;
 }
 
-.editTeamMemberButton {
+.editTeamMemberButton, .saveStatsButton {
     background-color: white;
     border: 3px solid black;
     border-radius: 8px;
-    width: 80%;
     font-size: 16px;
     cursor: pointer;
     font-weight: bold;
 }
 
-.editTeamMemberButton:hover {
+.editTeamMemberButton {
+    width: 80%;
+}
+
+.saveStatsButton {
+    width: 50%;
+}
+
+.editTeamMemberButton:hover, saveStatsButton:hover {
     background: linear-gradient(45deg, #ff220e 0%, #ffadad 100%);
     transform: scale(1.1);
 }
@@ -127,7 +134,65 @@ body, html {
     justify-content: center;
 }
 
-.logoContainer img{
+.logoContainer img {
     width: 50%;
     height: auto;
+}
+
+.changeStatsContainer {
+    display: flex;
+    height: 50%;
+    width: 100%;
+}
+
+.changeMovesetContainer, .changeAbilityContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 50%;
+    height: 100%;
+}
+
+.changeMovesetContainer p {
+    margin: 0;
+    padding: 0;
+}
+
+.changeAbilityContainer p {
+    margin: 0;
+    padding: 0;
+}
+
+.newStatsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.newStatsContainer p {
+    margin: 0;
+    padding: 0;
+}
+
+.scrollableContainer {
+    width: 70%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: white;
+    gap: 5px;
+}
+
+.checkBoxOption {
+    display: flex;
+    align-items: center;
 }
