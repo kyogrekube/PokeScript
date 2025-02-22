@@ -6,7 +6,6 @@ body, html {
     height: 100%;
 }
 
-/* Content Container */
 .content {
     display: flex;
     flex-direction: row;
@@ -17,91 +16,105 @@ body, html {
     position: fixed;
 }
 
-/* Container for the checkbox cards */
-.TeamsContainer {
+.innerContent {
     display: flex;
     flex-direction: row;
-    overflow-x: auto;
-    justify-content: space-evenly;
-    align-items: flex-start; /* Aligns at the top */
-    width: 60%;
-    height: 75%;
-    padding: 20px 10px;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 96%;
+    position: fixed;
     background-color: white;
     border: 3px solid black;
-    border-radius: 8px;
-    margin: 0% .3%;
+    border-radius: 16px;
 }
 
-/* Each individual card */
-.team {
+.teamsContainer {
+    width: 66%;
+    height: 90%;
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Center cards & stats */
-    flex-shrink: 0;
-    margin: 10px;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 3px solid black;
+    border-radius: 16px;
+    background-color: rgb(181, 179, 179);
+}
+
+.editingContainer {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    height: 90%;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .teamMemberCard {
-    width: 175px;
-    height: 310px;
-    background-color: white;
-    border: 3px solid black;
-    border-radius: 8px;
-    flex-shrink: 0;
-    margin-bottom: 2px; /* Adds space between card and stats */
-}
-
-.cardStats {
-    width: 175px; /* Match width of .teamMemberCard */
-    flex-direction: column;
-}
-
-.cardName {
-    display: flex; /* Allows flex properties */
-    justify-content: center; /* Centers text horizontally */
-    font-size: 20px;
-    width: 175px; /* Ensures it fills the container */
-    overflow-wrap: break-word; /* Prevents text from overflowing */
-}
-
-.abilityBox {
-    display: flex; /* Enables flexbox */
-    flex-direction: row; /* Items appear in the same row */
-    align-items: center; /* Vertically align image and text */
-    width: 175px; /* Matches .teamMemberCard width */
-    padding: 5px; /* Adds spacing inside */
-    gap: 8px; /* Adds space between image and text */
-}
-
-.abilityImage {
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border: 3px solid black;
-    border-radius: 8px;
-    flex-shrink: 0; /* Prevents shrinking */
-}
-
-.abilityStats {
-    font-size: 20px;
-    text-align: left; /* Ensures text aligns properly */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    flex-grow: 1; /* Allows text to take remaining space */
-}
-
-
-/* Exit button */
-.search-box {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    border: 3px solid black;
+    border-radius: 16px;
+    height: 40%;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    font-size: 150%;
+    justify-content: space-between;
+}
+
+.teamMemberStatsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 130%;
+}
+
+.teamMemberStatsContainer p {
+    margin: 0;
+    padding: 0;
+}
+
+.teamMemberCard p {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30%;
+}
+
+.editTeamMemberButton {
+    background-color: white;
     border: 3px solid black;
     border-radius: 8px;
-    padding: 15px;
-    background-color: white;
-    width: 35%;
+    width: 80%;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.editTeamMemberButton:hover {
+    background: linear-gradient(45deg, #ff220e 0%, #ffadad 100%);
+    transform: scale(1.1);
+}
+
+.editingPopup {
     height: 90%;
-    margin-right: .3%;
+    width: 90%;
+    background-color: rgb(181, 179, 179);
+    display: flex;
+    flex-direction: column;
+    border: 3px solid black;
+    border-radius: 16px;
 }
