@@ -111,7 +111,7 @@ body, html {
     width: 50%;
 }
 
-.editTeamMemberButton:hover, saveStatsButton:hover {
+.editTeamMemberButton:hover, .saveStatsButton:hover {
     background: linear-gradient(45deg, #ff220e 0%, #ffadad 100%);
     transform: scale(1.1);
 }
