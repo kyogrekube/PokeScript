@@ -162,7 +162,6 @@ body, html {
 .changeMovesetContainer, .changeAbilityContainer {
     width: 50%;
     height: 100%;
-    text-align: center;
 }
 
 .newStatsContainer {
@@ -171,7 +170,6 @@ body, html {
 }
 
 .changePokemonContainer {
-    text-align: center;
     width: 100%;
     height: 100%;
 }
