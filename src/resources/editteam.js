@@ -3,15 +3,7 @@ function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContain
     document.getElementById("editStatsButtonID").addEventListener("click", () => {
         const selectedPokemon = document.querySelectorAll("#possiblePokemonContainer .pokemonCheckbox:checked");
         // Ensures only 1 pokemon is selected at a time
-        if (selectedPokemon.length > 1) {
-            alert("Only 1 Pokemon can be selected at a time");
-            return;
-        }
-        else if (selectedPokemon.length < 1) {
-            alert("A pokemon must be selected");
-            return;
-        }
-        else {
+        if (selectedPokemon.length == 1) {
             // Creates moveset container
             const changeMovesetContainer = document.createElement("div");
             changeMovesetContainer.classList.add("changeMovesetContainer");
@@ -39,7 +31,24 @@ function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContain
                 <p>Ember, Draco Meteor, Wood Hammer, Heat Crash</p>
                 <button class="saveStatsButton">Save Stat Changes</button>
             `;
+            // Prevents users from selecting more than 4 moves at once
+            document.getElementById("possibleMovesContainer").addEventListener("change", () => {
+                const selectedMoves = document.querySelectorAll("#possibleMovesContainer .moveCheckbox:checked");
+                if (selectedMoves.length > 4) {
+                    alert("A pokemon may only have up to 4 moves");
+                    selectedMoves[selectedMoves.length - 1].checked = false;
+                }
+            });
+            // Prevents users from selecting more than 1 ability at once
+            document.getElementById("possibleAbilitiesContainer").addEventListener("change", () => {
+                const selectedAbility = document.querySelectorAll("#possibleAbilitiesContainer .abilityCheckbox:checked");
+                if (selectedAbility.length > 1) {
+                    alert("A pokemon may only have 1 ability");
+                    selectedAbility[selectedAbility.length - 1].checked = false;
+                }
+            });
 
+            // Populating lists of possible moves and abilities
             selectedPokemon.forEach(pokemon => {
                 fetch("https://pokeapi.co/api/v2/pokemon/"+pokemon.nextElementSibling.textContent)
                 .then(response => response.json())
@@ -50,7 +59,7 @@ function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContain
                         const checkBoxOption = document.createElement("div");
                         checkBoxOption.classList.add("checkBoxOption");
                         checkBoxOption.innerHTML = `
-                            <input type="checkbox" class="pokemonCheckbox">
+                            <input type="checkbox" class="moveCheckbox">
                             <label>${move.move.name}</label>
                         `;
                         possibleMovesContainer.appendChild(checkBoxOption);
@@ -61,13 +70,18 @@ function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContain
                         const checkBoxOption = document.createElement("div");
                         checkBoxOption.classList.add("checkBoxOption");
                         checkBoxOption.innerHTML = `
-                            <input type="checkbox" class="pokemonCheckbox">
+                            <input type="checkbox" class="abilityCheckbox">
                             <label>${ability.ability.name}</label>
                         `;
                         possibleAbilitiesContainer.appendChild(checkBoxOption);
                     });
                 });
             });
+        }
+        // Since a user cannot ever have more than 1 pokemon selected, we can assume that the only other option is having none selected
+        else {
+            alert("A pokemon must be selected");
+            return;
         }
     });
 }
@@ -87,6 +101,15 @@ function displayPokemonSelection() {
                     <div class="scrollableContainer" id="possiblePokemonContainer"></div>
                 </div>
             `;
+            // Prevents the user from selecting more than 1 pokemon at once
+            document.getElementById("possiblePokemonContainer").addEventListener("change", () => {
+                const selectedPokemon = document.querySelectorAll("#possiblePokemonContainer .pokemonCheckbox:checked");
+                if (selectedPokemon.length > 1) {
+                    alert("Only 1 pokemon may be selected at a time");
+                    selectedPokemon[selectedPokemon.length - 1].checked = false;
+                }
+            });
+            // Populates the list of possible pokemon to be chosen from
             const possiblePokemonContainer = document.getElementById("possiblePokemonContainer");
             fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
                 .then(response => response.json())
