@@ -88,11 +88,6 @@ body, html {
     font-size: 130%;
 }
 
-.teamMemberStatsContainer p {
-    margin: 0;
-    padding: 0;
-}
-
 .teamMemberCard p {
     margin: 0;
     padding: 0;
@@ -157,36 +152,32 @@ body, html {
     width: 100%;
 }
 
-.changeMovesetContainer, .changeAbilityContainer {
+.changeMovesetContainer, .changeAbilityContainer, .newStatsContainer, .changePokemonContainer{
     display: flex;
     flex-direction: column;
-    text-align: center;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.changeMovesetContainer, .changeAbilityContainer {
     width: 50%;
     height: 100%;
-}
-
-.changeMovesetContainer p {
-    margin: 0;
-    padding: 0;
-}
-
-.changeAbilityContainer p {
-    margin: 0;
-    padding: 0;
+    text-align: center;
 }
 
 .newStatsContainer {
-    display: flex;
-    flex-direction: column;
     height: 30%;
     width: 100%;
-    align-items: center;
-    justify-content: space-evenly;
 }
 
-.newStatsContainer p {
+.changePokemonContainer {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.changeMovesetContainer p, .changeAbilityContainer p, 
+.newStatsContainer p, .teamMemberStatsContainer p {
     margin: 0;
     padding: 0;
 }
@@ -207,16 +198,6 @@ body, html {
 .checkBoxOption {
     display: flex;
     align-items: center;
-}
-
-.changePokemonContainer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 100%;
 }
 
 .changePokemonContainer .scrollableContainer {
