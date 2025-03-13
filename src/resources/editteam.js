@@ -7,13 +7,26 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
     fetch(`https://pokeapi.co/api/v2/pokemon/${newlySelectedTeamMember}`)
         .then(response => response.json())
         .then(data => {
-            const teamMemberInfo = {
+            const newTeamMemberInfo = {
                 name: newlySelectedTeamMember,
                 moves: selectedMovesArray,
                 ability: selectedAbilityHolder,
                 imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`
             };
-            localStorage.setItem(teamMemberKey, JSON.stringify(teamMemberInfo));
+            // Takes entire saved team and replaces the currently selected team member's stats
+            const savedTeamInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
+            let newTeamInfo = []
+            for (let i = 0; i < 6; i++) {
+                if (i == teamMemberKey) {
+                    newTeamInfo.push(newTeamMemberInfo)
+                }
+                else {
+                    newTeamInfo.push(savedTeamInfo[i])
+                }
+                console.log(newTeamInfo[i]);
+            }
+            localStorage.setItem(localStorage.getItem("currentTeamKey"), JSON.stringify(newTeamInfo));
+            displayPokemonSelection();
         });
 }
 
@@ -21,16 +34,15 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
 function cancelStatChanges(teamMemberKey) {
     const changeStatsContainer = document.querySelector(".changeStatsContainer");
     const newStatsContainer = document.querySelector(".newStatsContainer");
-    document.getElementById("cancelStatChangesButtonID").addEventListener("click", () => {
-        changeStatsContainer.innerHTML = "";
-        newStatsContainer.innerHTML = "";
-        const savedTeamMemberInfo = JSON.parse(localStorage.getItem("teamMember" + teamMemberKey));
-        document.getElementById("teamMemberCard" + teamMemberKey).innerHTML = `
-            <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
-            <p><strong>${savedTeamMemberInfo.name}</strong></p>
-        `;
-    });
+    changeStatsContainer.innerHTML = "";
+    newStatsContainer.innerHTML = "";
+    const savedTeamMemberInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))[teamMemberKey]
+    document.getElementById("teamMemberCard" + (teamMemberKey+1)).innerHTML = `
+        <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
+        <p><strong>${savedTeamMemberInfo.name}</strong></p>
+    `;
 }
+
 
 // Creates the display for the Moveset and Ability selection process
 function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMember) {
@@ -59,6 +71,10 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         <button class="editStatsButton" id="saveStatsButtonID">Save Changes</button>
         <button class="editStatsButton" id="cancelStatChangesButtonID">Cancel</button>
     `;
+
+    document.getElementById("cancelStatChangesButtonID").addEventListener("click", () => {
+        cancelStatChanges(teamMemberKey);
+    });
 
     // Populating lists of possible moves and abilities
     fetch("https://pokeapi.co/api/v2/pokemon/" + newlySelectedTeamMember)
@@ -103,7 +119,7 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
     // Prevents users from selecting more than 1 ability at once
     document.getElementById("possibleAbilitiesContainer").addEventListener("change", (event) => {
         const selectedAbility = document.querySelectorAll("#possibleAbilitiesContainer .abilityCheckbox:checked");
-        if (selectedAbility.length != 1) {
+        if (selectedAbility.length > 1) {
             alert("A pokemon may only have 1 ability");
             event.target.checked = false;
         }
@@ -132,33 +148,35 @@ function displayPokemonSelection() {
     const changeStatsContainer = document.querySelector(".changeStatsContainer");
     const newStatsContainer = document.querySelector(".newStatsContainer");
 
-    const localStorageKeys = Object.keys(localStorage);
-    localStorageKeys.forEach(keyName => {
-        const savedTeamMemberInfo = JSON.parse(localStorage.getItem(keyName));
-        const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + keyName.slice(-1));
-
-        document.getElementById("teamMemberCard" + keyName.slice(-1)).innerHTML = `
-            <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
-            <p><strong>${savedTeamMemberInfo.name}</strong></p>
+    const currentTeamData = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
+    //console.log(test);
+    //console.log(test[0]);
+    //console.log(test[0].name);
+    for (let j = 0; j < 6; j++) {
+        const teamMemberIndex = j + 1
+        const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
+        document.getElementById("teamMemberCard" + teamMemberIndex).innerHTML = `
+            <img src="${currentTeamData[j].imageURL}" alt="${currentTeamData[j].name + "Sprite"}">
+            <p><strong>${currentTeamData[j].name}</strong></p>
         `;
         
         teamMemberStatsContainer.innerHTML = `<p><strong>Ability:</strong></p>`;
-        if (savedTeamMemberInfo.ability == "") {
+        if (currentTeamData[j].ability == "") {
             teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>N/A</p>`;
         }
         else {
-            teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${savedTeamMemberInfo.ability}</p>`;
+            teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].ability}</p>`;
         }
         teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p><strong>Moveset:</strong></p>`;
         for (let i = 0; i < 4; i++) {
-            if (i < savedTeamMemberInfo.moves.length) {
-                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${savedTeamMemberInfo.moves[i]}</p>`;
+            if (i < currentTeamData[j].moves.length) {
+                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].moves[i]}</p>`;
             } 
             else {
                 teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + "<p>N/A</p>";
             }
         }
-    });
+    };
 
     // Show team card data from existing local storage
     editButtons.forEach(button => {
@@ -208,36 +226,37 @@ function displayPokemonSelection() {
                                 <p><strong>${newlySelectedTeamMember}</strong></p>
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
-                                displayMovesetAndAbilitySelection("teamMember" + clickEvent.target.id.slice(-1), newlySelectedTeamMember);
+                                displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember);
                             });
                     });
                 }
             });
-            cancelStatChanges(changeStatsContainer, newStatsContainer, clickEvent.target.id.slice(-1));
+            document.getElementById("cancelStatChangesButtonID").addEventListener("click", () => {
+                cancelStatChanges(clickEvent.target.id.slice(-1) - 1);
+            });
         });
     });
 }
 
-// Creates default/empty elements for each team member slot
-function initializeLocalStorage() {
-    for (let i = 1; i <= 6; i++) {
-        if (localStorage.getItem("teamMember" + i) === null) {
-            const teamMemberInfo = {
+// Creates default/empty elements for each team member slot of the given team
+function initializeLocalStorage(teamKey) {
+    if (localStorage.getItem(teamKey) === null) {
+        let teamInfo = [];
+        for (let i = 0; i < 6; i++) {
+            teamInfo.push({
                 name: "N/A",
                 moves: [],
                 ability: "",
                 imageURL: "./media/missingno_sprite.png"
-            };
-            localStorage.setItem("teamMember" + i, JSON.stringify(teamMemberInfo));
+            });
         }
+        localStorage.setItem(teamKey, JSON.stringify(teamInfo));
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     //localStorage.clear(); /* Here for testing purposes */
     console.log(localStorage);
-    const testVar = JSON.parse(localStorage.getItem("teamMember1"));
-    console.log(testVar.ability);
-    initializeLocalStorage();
+    initializeLocalStorage(localStorage.getItem("currentTeamKey"));
     displayPokemonSelection();
 });
