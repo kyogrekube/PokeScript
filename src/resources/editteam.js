@@ -1,5 +1,7 @@
 // Saves all proposed stat changes and closes the side menus
-function saveStatChanges(changeStatsContainer, newStatsContainer, teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember) {
+function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember) {
+    const changeStatsContainer = document.querySelector(".changeStatsContainer");
+    const newStatsContainer = document.querySelector(".newStatsContainer");
     changeStatsContainer.innerHTML = "";
     newStatsContainer.innerHTML = "";
     fetch(`https://pokeapi.co/api/v2/pokemon/${newlySelectedTeamMember}`)
@@ -16,7 +18,9 @@ function saveStatChanges(changeStatsContainer, newStatsContainer, teamMemberKey,
 }
 
 // Cancels all proposed stat changes and closes the side menus
-function cancelStatChanges(changeStatsContainer, newStatsContainer, teamMemberKey) {
+function cancelStatChanges(teamMemberKey) {
+    const changeStatsContainer = document.querySelector(".changeStatsContainer");
+    const newStatsContainer = document.querySelector(".newStatsContainer");
     document.getElementById("cancelStatChangesButtonID").addEventListener("click", () => {
         changeStatsContainer.innerHTML = "";
         newStatsContainer.innerHTML = "";
@@ -29,7 +33,9 @@ function cancelStatChanges(changeStatsContainer, newStatsContainer, teamMemberKe
 }
 
 // Creates the display for the Moveset and Ability selection process
-function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContainer, teamMemberKey, newlySelectedTeamMember) {
+function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMember) {
+    const changeStatsContainer = document.querySelector(".changeStatsContainer");
+    const newStatsContainer = document.querySelector(".newStatsContainer");
     // Creates moveset container
     const changeMovesetContainer = document.createElement("div");
     changeMovesetContainer.classList.add("changeMovesetContainer");
@@ -116,7 +122,7 @@ function displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContain
             alert("A pokemon must have 1 ability");
             return;
         }
-        saveStatChanges(changeStatsContainer, newStatsContainer, teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember);
+        saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember);
     });
 }
 
@@ -129,10 +135,29 @@ function displayPokemonSelection() {
     const localStorageKeys = Object.keys(localStorage);
     localStorageKeys.forEach(keyName => {
         const savedTeamMemberInfo = JSON.parse(localStorage.getItem(keyName));
+        const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + keyName.slice(-1));
+
         document.getElementById("teamMemberCard" + keyName.slice(-1)).innerHTML = `
             <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
             <p><strong>${savedTeamMemberInfo.name}</strong></p>
         `;
+        
+        teamMemberStatsContainer.innerHTML = `<p><strong>Ability:</strong></p>`;
+        if (savedTeamMemberInfo.ability == "") {
+            teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>N/A</p>`;
+        }
+        else {
+            teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${savedTeamMemberInfo.ability}</p>`;
+        }
+        teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p><strong>Moveset:</strong></p>`;
+        for (let i = 0; i < 4; i++) {
+            if (i < savedTeamMemberInfo.moves.length) {
+                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${savedTeamMemberInfo.moves[i]}</p>`;
+            } 
+            else {
+                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + "<p>N/A</p>";
+            }
+        }
     });
 
     // Show team card data from existing local storage
@@ -165,7 +190,6 @@ function displayPokemonSelection() {
                     });
                 });
             // Prevents the user from selecting more than 1 pokemon at once
-            let newlySelectedTeamMember = "";
             const possiblePokemonContainer = document.getElementById("possiblePokemonContainer");
             possiblePokemonContainer.addEventListener("change", (selectEvent) => {
                 const selectedPokemon = document.querySelectorAll("#possiblePokemonContainer .pokemonCheckbox:checked");
@@ -175,7 +199,7 @@ function displayPokemonSelection() {
                 }
                 // When one pokemon is selected, update the team card's name and sprite
                 else if (selectedPokemon.length == 1) {
-                    newlySelectedTeamMember = selectedPokemon[0].nextElementSibling.textContent;
+                    let newlySelectedTeamMember = selectedPokemon[0].nextElementSibling.textContent;
                     fetch(`https://pokeapi.co/api/v2/pokemon/${newlySelectedTeamMember}`)
                         .then(response => response.json())
                         .then(data => {
@@ -184,7 +208,7 @@ function displayPokemonSelection() {
                                 <p><strong>${newlySelectedTeamMember}</strong></p>
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
-                                displayMovesetAndAbilitySelection(changeStatsContainer, newStatsContainer, "teamMember" + clickEvent.target.id.slice(-1), newlySelectedTeamMember);
+                                displayMovesetAndAbilitySelection("teamMember" + clickEvent.target.id.slice(-1), newlySelectedTeamMember);
                             });
                     });
                 }
