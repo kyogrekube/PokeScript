@@ -7,11 +7,32 @@ function editTeam(teamKey) {
     window.location.href = "./editteam.html";
 }
 
+// Creates default/empty elements for each team member slot of the given team
+function initializeLocalStorage(teamKey) {
+    if (localStorage.getItem(teamKey) === null) {
+        let teamInfo = [];
+        for (let i = 0; i < 6; i++) {
+            teamInfo.push({
+                name: "N/A",
+                moves: [],
+                ability: "",
+                imageURL: "./media/missingno_sprite.png"
+            });
+        }
+        localStorage.setItem(teamKey, JSON.stringify(teamInfo));
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    //localStorage.clear(); /* Here for testing purposes */
+    //console.log(localStorage);
+    initializeLocalStorage("playerTeam");
+    initializeLocalStorage("enemyTeam");
+
+
     let teams = ["player", "enemy"];
     for (let i = 0; i < 2; i++) {
         const savedTeamInfo = JSON.parse(localStorage.getItem(teams[i] + "Team"))
-        console.log(savedTeamInfo);
         for (let j = 0; j < 6; j++) {
             const currentTeamMemberCard = document.getElementById(teams[i] + "TeamMemberCard" + (j + 1));
             currentTeamMemberCard.innerHTML = `
