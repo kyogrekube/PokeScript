@@ -38,8 +38,12 @@ function cancelStatChanges(teamMemberKey) {
     newStatsContainer.innerHTML = "";
     const savedTeamMemberInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))[teamMemberKey]
     document.getElementById("teamMemberCard" + (teamMemberKey+1)).innerHTML = `
-        <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
-        <p><strong>${savedTeamMemberInfo.name}</strong></p>
+        <div class="imgContainer">
+            <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
+        </div>
+        <div class="nameContainer">
+            <p><strong>${savedTeamMemberInfo.name}</strong></p>
+        </div>
     `;
 }
 
@@ -156,8 +160,12 @@ function displayPokemonSelection() {
         const teamMemberIndex = j + 1
         const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
         document.getElementById("teamMemberCard" + teamMemberIndex).innerHTML = `
-            <img src="${currentTeamData[j].imageURL}" alt="${currentTeamData[j].name + "Sprite"}">
-            <p><strong>${currentTeamData[j].name}</strong></p>
+            <div class="imgContainer">
+                <img src="${currentTeamData[j].imageURL}" alt="${currentTeamData[j].name + "Sprite"}">
+            </div>
+            <div class="nameContainer">
+                <p><strong>${currentTeamData[j].name}</strong></p>
+            </div>
         `;
         
         teamMemberStatsContainer.innerHTML = `<p><strong>Ability:</strong></p>`;
@@ -222,8 +230,12 @@ function displayPokemonSelection() {
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("teamMemberCard" + clickEvent.target.id.slice(-1)).innerHTML = `
-                                <img src="${`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}" alt="${newlySelectedTeamMember + "Sprite"}">
-                                <p><strong>${newlySelectedTeamMember}</strong></p>
+                                <div class="imgContainer">
+                                    <img src="${`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}" alt="${newlySelectedTeamMember + "Sprite"}">
+                                </div>
+                                <div class="nameContainer">
+                                    <p><strong>${newlySelectedTeamMember}</strong></p>
+                                </div>
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
                                 displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember);
