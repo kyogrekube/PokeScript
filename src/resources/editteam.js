@@ -23,7 +23,6 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
                 else {
                     newTeamInfo.push(savedTeamInfo[i])
                 }
-                console.log(newTeamInfo[i]);
             }
             localStorage.setItem(localStorage.getItem("currentTeamKey"), JSON.stringify(newTeamInfo));
             displayPokemonSelection();
@@ -153,9 +152,6 @@ function displayPokemonSelection() {
     const newStatsContainer = document.querySelector(".newStatsContainer");
 
     const currentTeamData = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
-    //console.log(test);
-    //console.log(test[0]);
-    //console.log(test[0].name);
     for (let j = 0; j < 6; j++) {
         const teamMemberIndex = j + 1
         const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
@@ -268,7 +264,7 @@ function initializeLocalStorage(teamKey) {
 
 document.addEventListener("DOMContentLoaded", () => {
     //localStorage.clear(); /* Here for testing purposes */
-    console.log(localStorage);
+    //console.log(localStorage);
     initializeLocalStorage(localStorage.getItem("currentTeamKey"));
     displayPokemonSelection();
 });
