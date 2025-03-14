@@ -55,3 +55,19 @@ body, html {
     width: 10%;
     position: space-evenly;
 }
+
+.bottomActionMenu {
+    display: flex;
+    background-color: red;
+    height: 100%;
+    width: 50%;
+    position: space-evenly;
+}
+
+.battleLog {
+    display: flex;
+    background-color: white;
+    height: 100%;
+    width: 50%;
+    position: space-evenly;
+}
