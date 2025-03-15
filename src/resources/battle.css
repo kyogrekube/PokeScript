@@ -71,3 +71,19 @@ body, html {
     width: 50%;
     position: space-evenly;
 }
+
+.playerName{
+    display: flex;
+    background-color: green;
+    height: 20%;
+    width: 100%;
+    position: space-evenly;
+}
+
+.remainingPokemon {
+    display: flex;
+    background-color: yellow;
+    height: 50%;
+    width: 100%;
+    position: space-evenly;
+}
