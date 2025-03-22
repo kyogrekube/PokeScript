@@ -91,7 +91,15 @@ body, html {
     flex-direction: column;
 }
 
-.remainingPokemon {
+.remainingPokemonTop {
+    display: flex;
+    height: 50%;
+    width: 100%;
+    position: space-evenly;
+    flex-direction: row;
+}
+
+.remainingPokemonBottom {
     display: flex;
     height: 50%;
     width: 100%;
