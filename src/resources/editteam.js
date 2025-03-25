@@ -1,32 +1,34 @@
+function parseItem(item) {
+    return item.replace(/(^\w|[-\s]\w)/g, match => match.toUpperCase());
+}
+
+
 // Saves all proposed stat changes and closes the side menus
-function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember) {
+function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember, data) {
     const changeStatsContainer = document.querySelector(".changeStatsContainer");
     const newStatsContainer = document.querySelector(".newStatsContainer");
     changeStatsContainer.innerHTML = "";
     newStatsContainer.innerHTML = "";
-    fetch(`https://pokeapi.co/api/v2/pokemon/${newlySelectedTeamMember}`)
-        .then(response => response.json())
-        .then(data => {
-            const newTeamMemberInfo = {
-                name: newlySelectedTeamMember,
-                moves: selectedMovesArray,
-                ability: selectedAbilityHolder,
-                imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`
-            };
-            // Takes entire saved team and replaces the currently selected team member's stats
-            const savedTeamInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
-            let newTeamInfo = []
-            for (let i = 0; i < 6; i++) {
-                if (i == teamMemberKey) {
-                    newTeamInfo.push(newTeamMemberInfo)
-                }
-                else {
-                    newTeamInfo.push(savedTeamInfo[i])
-                }
-            }
-            localStorage.setItem(localStorage.getItem("currentTeamKey"), JSON.stringify(newTeamInfo));
-            displayPokemonSelection();
-        });
+    const newTeamMemberInfo = {
+        name: newlySelectedTeamMember,
+        nickname: parseItem(newlySelectedTeamMember),
+        moves: selectedMovesArray,
+        ability: selectedAbilityHolder,
+        imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`
+    };
+    // Takes entire saved team and replaces the currently selected team member's stats
+    const savedTeamInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
+    let newTeamInfo = []
+    for (let i = 0; i < 6; i++) {
+        if (i == teamMemberKey) {
+            newTeamInfo.push(newTeamMemberInfo)
+        }
+        else {
+            newTeamInfo.push(savedTeamInfo[i])
+        }
+    }
+    localStorage.setItem(localStorage.getItem("currentTeamKey"), JSON.stringify(newTeamInfo));
+    displayPokemonSelection();
 }
 
 // Cancels all proposed stat changes and closes the side menus
@@ -48,7 +50,7 @@ function cancelStatChanges(teamMemberKey) {
 
 
 // Creates the display for the Moveset and Ability selection process
-function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMember) {
+function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMember, data) {
     const changeStatsContainer = document.querySelector(".changeStatsContainer");
     const newStatsContainer = document.querySelector(".newStatsContainer");
     // Creates moveset container
@@ -79,35 +81,32 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         cancelStatChanges(teamMemberKey);
     });
 
-    // Populating lists of possible moves and abilities
-    fetch("https://pokeapi.co/api/v2/pokemon/" + newlySelectedTeamMember)
-    .then(response => response.json())
-    .then(data => {
-        // Sorts data alphabetically
-        const sortedMoves = data.moves.map(move => move.move.name).sort((a, b) => a.localeCompare(b));
-        const sortedAbilities = data.abilities.map(ability => ability.ability.name).sort((a, b) => a.localeCompare(b));
+    // Sorts data alphabetically
+    const sortedMoves = data.moves.map(move => move.move.name).sort((a, b) => a.localeCompare(b));
+    const sortedAbilities = data.abilities.map(ability => ability.ability.name).sort((a, b) => a.localeCompare(b));
 
-        // Populating the left scrollable element with possible moves
-        sortedMoves.forEach(move => {
-            const checkBoxOption = document.createElement("div");
-            checkBoxOption.classList.add("checkBoxOption");
-            checkBoxOption.innerHTML = `
-                <input type="checkbox" class="moveCheckbox" value="${move}">
-                <label>${move}</label>
-            `;
-            possibleMovesContainer.appendChild(checkBoxOption);
-        });
+    // Populating the left scrollable element with possible moves
+    sortedMoves.forEach(move => {
+        const checkBoxOption = document.createElement("div");
+        checkBoxOption.classList.add("checkBoxOption");
+        const moveNickname = parseItem(move);
+        checkBoxOption.innerHTML = `
+            <input type="checkbox" class="moveCheckbox" value="${moveNickname}">
+            <label>${moveNickname}</label>
+        `;
+        possibleMovesContainer.appendChild(checkBoxOption);
+    });
 
-        // Populating the right scrollable element with possisble abilities
-        sortedAbilities.forEach(ability => {
-            const checkBoxOption = document.createElement("div");
-            checkBoxOption.classList.add("checkBoxOption");
-            checkBoxOption.innerHTML = `
-                <input type="checkbox" class="abilityCheckbox" value="${ability}">
-                <label>${ability}</label>
-            `;
-            possibleAbilitiesContainer.appendChild(checkBoxOption);
-        });
+    // Populating the right scrollable element with possisble abilities
+    sortedAbilities.forEach(ability => {
+        const checkBoxOption = document.createElement("div");
+        checkBoxOption.classList.add("checkBoxOption");
+        const abilityNickname = parseItem(ability);
+        checkBoxOption.innerHTML = `
+            <input type="checkbox" class="abilityCheckbox" value="${abilityNickname}">
+            <label>${abilityNickname}</label>
+        `;
+        possibleAbilitiesContainer.appendChild(checkBoxOption);
     });
 
     // Stores the proposed stat changes
@@ -145,7 +144,7 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
             alert("A pokemon must have 1 ability");
             return;
         }
-        saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember);
+        saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolder, newlySelectedTeamMember, data);
     });
 }
 
@@ -155,6 +154,7 @@ function displayPokemonSelection() {
     const changeStatsContainer = document.querySelector(".changeStatsContainer");
     const newStatsContainer = document.querySelector(".newStatsContainer");
 
+    // Displays existing team member data
     const currentTeamData = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
     for (let j = 0; j < 6; j++) {
         const teamMemberIndex = j + 1
@@ -210,7 +210,7 @@ function displayPokemonSelection() {
                         checkBoxOption.classList.add("checkBoxOption");
                         checkBoxOption.innerHTML = `
                             <input type="checkbox" class="pokemonCheckbox">
-                            <label>${pokemon.name}</label>
+                            <label>${parseItem(pokemon.name)}</label>
                         `;
                         possiblePokemonContainer.appendChild(checkBoxOption);
                     });
@@ -234,11 +234,11 @@ function displayPokemonSelection() {
                                     <img src="${`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}" alt="${newlySelectedTeamMember + "Sprite"}">
                                 </div>
                                 <div class="nameContainer">
-                                    <p><strong>${newlySelectedTeamMember}</strong></p>
+                                    <p><strong>${parseItem(newlySelectedTeamMember)}</strong></p>
                                 </div>
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
-                                displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember);
+                                displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember, data);
                             });
                     });
                 }
@@ -257,6 +257,7 @@ function initializeLocalStorage(teamKey) {
         for (let i = 0; i < 6; i++) {
             teamInfo.push({
                 name: "N/A",
+                nickname: "N/A",
                 moves: [],
                 ability: "",
                 imageURL: "./media/missingno_sprite.png"
@@ -268,7 +269,7 @@ function initializeLocalStorage(teamKey) {
 
 document.addEventListener("DOMContentLoaded", () => {
     //localStorage.clear(); /* Here for testing purposes */
-    //console.log(localStorage);
+    console.log(localStorage);
     initializeLocalStorage(localStorage.getItem("currentTeamKey"));
     displayPokemonSelection();
 });

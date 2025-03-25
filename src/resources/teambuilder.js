@@ -14,6 +14,7 @@ function initializeLocalStorage(teamKey) {
         for (let i = 0; i < 6; i++) {
             teamInfo.push({
                 name: "N/A",
+                nickname: "N/A",
                 moves: [],
                 ability: "",
                 imageURL: "./media/missingno_sprite.png"
@@ -40,10 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="cardFront">
                         <div class="imgContainer">
                             <img src="${savedTeamInfo[j]?.imageURL || './media/missingno_sprite.png'}" 
-                                 alt="${savedTeamInfo[j]?.name || 'Unknown'} Sprite">
+                                 alt="${savedTeamInfo[j]?.nickname || 'Unknown'} Sprite">
                         </div>
                         <div class="nameContainer">
-                            <p><strong>${savedTeamInfo[j]?.name || 'N/A'}</strong></p>
+                            <p><strong>${savedTeamInfo[j]?.nickname || 'N/A'}</strong></p>
                         </div>
                     </div>
                     <div class="cardBack">
