@@ -83,24 +83,28 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
     fetch("https://pokeapi.co/api/v2/pokemon/" + newlySelectedTeamMember)
     .then(response => response.json())
     .then(data => {
+        // Sorts data alphabetically
+        const sortedMoves = data.moves.map(move => move.move.name).sort((a, b) => a.localeCompare(b));
+        const sortedAbilities = data.abilities.map(ability => ability.ability.name).sort((a, b) => a.localeCompare(b));
+
         // Populating the left scrollable element with possible moves
-        data.moves.forEach(move => {
+        sortedMoves.forEach(move => {
             const checkBoxOption = document.createElement("div");
             checkBoxOption.classList.add("checkBoxOption");
             checkBoxOption.innerHTML = `
-                <input type="checkbox" class="moveCheckbox" value="${move.move.name}">
-                <label>${move.move.name}</label>
+                <input type="checkbox" class="moveCheckbox" value="${move}">
+                <label>${move}</label>
             `;
             possibleMovesContainer.appendChild(checkBoxOption);
         });
 
         // Populating the right scrollable element with possisble abilities
-        data.abilities.forEach(ability => {
+        sortedAbilities.forEach(ability => {
             const checkBoxOption = document.createElement("div");
             checkBoxOption.classList.add("checkBoxOption");
             checkBoxOption.innerHTML = `
-                <input type="checkbox" class="abilityCheckbox" value="${ability.ability.name}">
-                <label>${ability.ability.name}</label>
+                <input type="checkbox" class="abilityCheckbox" value="${ability}">
+                <label>${ability}</label>
             `;
             possibleAbilitiesContainer.appendChild(checkBoxOption);
         });
