@@ -39,14 +39,16 @@ body, html {
     width: 10%;
     position: space-evenly;
     flex-direction: column;
+    border: 3px solid black;
 }
 
 .centerBattleFrame {
     display: flex;
-    background-color: black;
+    background-color: white;
     height: 100%;
     width: 80%;
     position: space-evenly;
+    border: 3px solid black;
 }
 
 .rightTopOverviewBox {
@@ -56,6 +58,7 @@ body, html {
     width: 10%;
     position: space-evenly;
     flex-direction: column;
+    border: 3px solid black;
 }
 
 .bottomActionMenu {
@@ -64,6 +67,7 @@ body, html {
     height: 100%;
     width: 50%;
     position: space-evenly;
+    border: 3px solid black;
 }
 
 .battleLog {
@@ -72,6 +76,7 @@ body, html {
     height: 100%;
     width: 50%;
     position: space-evenly;
+    border: 3px solid black;
 }
 
 .playerName{
@@ -97,6 +102,8 @@ body, html {
     width: 100%;
     position: space-evenly;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .remainingPokemonBottom {
@@ -105,11 +112,13 @@ body, html {
     width: 100%;
     position: space-evenly;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .dot {
-    height: 25px;
-    width: 25px;
+    height: 35px;
+    width: 35px;
     background-color: black;
     border-radius: 50%;
     display: inline-block;
