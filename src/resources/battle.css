@@ -39,7 +39,9 @@ body, html {
     width: 10%;
     position: space-evenly;
     flex-direction: column;
-    border: 3px solid black;
+    border-top: 4px solid black;
+    border-bottom: 2px solid black;
+    border-left: 4px solid black;
 }
 
 .centerBattleFrame {
@@ -48,7 +50,7 @@ body, html {
     height: 100%;
     width: 80%;
     position: space-evenly;
-    border: 3px solid black;
+    border: 4px solid black;
 }
 
 .rightTopOverviewBox {
@@ -58,25 +60,101 @@ body, html {
     width: 10%;
     position: space-evenly;
     flex-direction: column;
-    border: 3px solid black;
+    border-top: 4px solid black;
+    border-bottom: 2px solid black;
+    border-right: 4px solid black;
 }
 
-.bottomActionMenu {
+.actionMenuButton {
+    border: none;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+.actionMenuButton:hover {
+    transform: scale(1.05);
+}
+
+.fight {
+    background-color: #e74c3c;
+    width: 220px;
+    height: 140px;
+    border-radius: 50%;
+    font-size: 1.8em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.bag {
+    background-color: #f39c12;
+}
+
+.pokemon {
+    background-color: #27ae60;
+}
+
+.back {
+    background-color: aqua;
+}
+
+.mega {
+    background-color: rgb(47, 41, 41);
+}
+
+/* Left side bottom */
+.ActionMenu {
     display: flex;
-    background-color: red;
+    flex-direction: column;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    background-color: lightgray;
     height: 100%;
     width: 50%;
-    position: space-evenly;
-    border: 3px solid black;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    border-right: 3px solid black;
+    border-left: 4px solid black;
 }
 
+.topInnerActionMenu, .bottomInnerActionMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    width: 100%;
+}
+
+.bottomInnerActionMenu > div {
+    flex: 1; /* Each takes equal space */
+    /*border: 1px solid black; */
+  }
+
+.bottomLeftInnerActionMenu, .bottomMiddleInnerActionMenu, .bottomRightInnerActionMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Right side bottom */
 .battleLog {
     display: flex;
-    background-color: white;
+    background-color: lightgray;
     height: 100%;
     width: 50%;
     position: space-evenly;
-    border: 3px solid black;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    border-right: 4px solid black;
+    border-left: 3px solid black;
 }
 
 .playerName{
@@ -122,4 +200,4 @@ body, html {
     background-color: black;
     border-radius: 50%;
     display: inline-block;
-  }
+}
