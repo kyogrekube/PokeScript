@@ -24,6 +24,47 @@ function initializeLocalStorage(teamKey) {
     }
 }
 
+// Render team member function
+function renderTeamMemberCard(member, containerId) {
+    document.getElementById(containerId).innerHTML = `
+        <div class="teamMemberCardInner">
+            <div class="cardFront">
+                <div class="imgContainer">
+                    <img src="${member?.imageURL || './media/missingno_sprite.png'}" 
+                         alt="${member?.nickname || 'Unknown'} Sprite"
+                         onerror="this.src='./media/missingno_sprite.png';">
+                </div>
+                <div class="nameContainer">
+                    <p><strong>${member?.nickname || 'N/A'}</strong></p>
+                </div>
+            </div>
+            <div class="cardBack">
+                <p><strong>Ability:</strong></p>
+                <p>${member?.ability || "N/A"}</p>
+                <p><strong>Move 1:</strong></p>
+                <p>${member?.moves?.[0] || "N/A"}</p>
+                <p><strong>Move 2:</strong></p>
+                <p>${member?.moves?.[1] || "N/A"}</p>
+                <p><strong>Move 3:</strong></p>
+                <p>${member?.moves?.[2] || "N/A"}</p>
+                <p><strong>Move 4:</strong></p>
+                <p>${member?.moves?.[3] || "N/A"}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Helper function tyo Render a team member
+function getDefaultTeamMember() {
+    return {
+        name: "N/A",
+        nickname: "N/A",
+        moves: [],
+        ability: "",
+        imageURL: "./media/missingno_sprite.png"
+    };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     //localStorage.clear(); /* Here for testing purposes */
     //console.log(localStorage);
