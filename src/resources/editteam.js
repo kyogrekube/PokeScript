@@ -93,7 +93,9 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         checkBoxOption.innerHTML = `
             <input type="checkbox" class="moveCheckbox" value="${moveNickname}">
             <label>${moveNickname}</label>
+            <!--<button class="infoButton" label="${moveNickname}" style="margin-left: 8px;">ℹ️</button>-->
         `;
+        // UNCOMMENT HTML LINE WHEN THIS FEATURE IS ADDED
         possibleMovesContainer.appendChild(checkBoxOption);
     });
 
@@ -105,7 +107,9 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         checkBoxOption.innerHTML = `
             <input type="checkbox" class="abilityCheckbox" value="${abilityNickname}">
             <label>${abilityNickname}</label>
+            <!--<button class="infoButton" label="${abilityNickname}" style="margin-left: 8px;">ℹ️</button>-->
         `;
+        // UNCOMMENT HTML LINE WHEN THIS FEATURE IS ADDED
         possibleAbilitiesContainer.appendChild(checkBoxOption);
     });
 
@@ -114,14 +118,28 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
     let selectedAbilityHolder = "";
 
     // Prevents users from selecting more than 4 moves at once
-    document.getElementById("possibleMovesContainer").addEventListener("change", (event) => {
+    document.getElementById("possibleMovesContainer").addEventListener("change", async (event) => {
         const selectedMoves = document.querySelectorAll("#possibleMovesContainer .moveCheckbox:checked");
         if (selectedMoves.length > 4) {
             alert("A pokemon may only have up to 4 moves");
             event.target.checked = false;
-        }    
-        selectedMovesArray = Array.from(selectedMoves).map(move => move.value);
+            return;
+        }
+
+        // Wait for all move fetches to complete before updating selectedMovesArray
+        const fetchPromises = Array.from(selectedMoves).map(async (checkbox) => {
+            const response = await fetch(`https://pokeapi.co/api/v2/move/${checkbox.value}/`);
+            const moveData = await response.json();
+            // Inner array contains the move name, move power, move accuracy, move pp, and move pp
+            // First move pp will track total pp for the move and 2nd will track remaining pp in battle page
+            return [checkbox.value, moveData.power, moveData.accuracy, moveData.pp, moveData.pp];
+        });
+
+        selectedMovesArray = await Promise.all(fetchPromises);
     });
+  
+
+
     // Prevents users from selecting more than 1 ability at once
     document.getElementById("possibleAbilitiesContainer").addEventListener("change", (event) => {
         const selectedAbility = document.querySelectorAll("#possibleAbilitiesContainer .abilityCheckbox:checked");
@@ -178,7 +196,7 @@ function displayPokemonSelection() {
         teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p><strong>Moveset:</strong></p>`;
         for (let i = 0; i < 4; i++) {
             if (i < currentTeamData[j].moves.length) {
-                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].moves[i]}</p>`;
+                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].moves[i][0]}</p>`;
             } 
             else {
                 teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + "<p>N/A</p>";
@@ -239,6 +257,13 @@ function displayPokemonSelection() {
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
                                 displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember, data);
+                                // Event listener to activate when info button is clicked
+                                /*document.addEventListener("click", function(event) {
+                                    if (event.target.classList.contains("infoButton")) {
+                                        const item = event.target.getAttribute("label");
+                                        alert(`More info about ${item} will go here.`);
+                                    }
+                                });*/
                             });
                     });
                 }

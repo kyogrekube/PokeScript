@@ -32,8 +32,14 @@ function loadActionMenu() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadActionMenu();
+function loadBattleInfo() {
     console.log(localStorage);
+    //localStorage.setItem("")
+    //localStorage.removeItem("mytime");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadBattleInfo();
+    loadActionMenu();
 });
   
