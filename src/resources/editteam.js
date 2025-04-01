@@ -9,12 +9,56 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
     const newStatsContainer = document.querySelector(".newStatsContainer");
     changeStatsContainer.innerHTML = "";
     newStatsContainer.innerHTML = "";
+
+    // Holds stats to fetch
+    const statLookup = {
+        hp: "hp",
+        attack: "attack",
+        specialAttack: "special-attack",
+        defense: "defense",
+        specialDefense: "special-defense",
+        speed: "speed"
+    };
+    
+    // Holds actual stats
+    const statsMap = {
+        hp: [],
+        attack: [],
+        specialAttack: [],
+        defense: [],
+        specialDefense: [],
+        speed: []
+    };
+    
+    // Fill statsMap with actual stat values
+    data.stats.forEach(stat => {
+        const name = stat.stat.name;
+        const value = stat.base_stat;
+    
+        for (const key in statLookup) {
+            if (statLookup[key] === name) {
+                statsMap[key] = [value, value, 0]; // base stat, current stat, buff/debuff
+            }
+        }
+    });
+
+    // Populates team member info to save
     const newTeamMemberInfo = {
         name: newlySelectedTeamMember,
         nickname: parseItem(newlySelectedTeamMember),
         moves: selectedMovesArray,
         ability: selectedAbilityHolder,
-        imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`
+        imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
+        /* For each stat the structure is: base stat, current stat, buff/debuff */
+        hp: statsMap.hp,
+        attack: statsMap.attack,
+        specialAttack: statsMap.specialAttack,
+        defense: statsMap.defense,
+        specialDefense: statsMap.specialDefense,
+        speed: statsMap.speed,
+        /* Base evasion and accurate are always 100 */
+        evasion: [100, 100, 0],
+        accuracy: [100, 100, 0]
     };
     // Takes entire saved team and replaces the currently selected team member's stats
     const savedTeamInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
@@ -285,7 +329,16 @@ function initializeLocalStorage(teamKey) {
                 nickname: "N/A",
                 moves: [],
                 ability: "",
-                imageURL: "./media/missingno_sprite.png"
+                imageURL: "./media/missingno_sprite.png",
+                /* For each stat the structure is: base stat, current stat, buff/debuff */
+                hp: [0, 0, 0],
+                attack: [0, 0, 0],
+                specialAttack: [0, 0, 0],
+                defense: [0, 0, 0],
+                specialDefense: [0, 0, 0],
+                speed: [0, 0, 0],
+                evasion: [100, 100, 0],
+                accuracy: [100, 100, 0]
             });
         }
         localStorage.setItem(teamKey, JSON.stringify(teamInfo));
