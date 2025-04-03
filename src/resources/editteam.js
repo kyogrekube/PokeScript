@@ -48,7 +48,8 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
         nickname: parseItem(newlySelectedTeamMember),
         moves: selectedMovesArray,
         ability: selectedAbilityHolder,
-        imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
+        frontImageURL: `${data.sprites.front_default}`,
+        backImageURL: `${data.sprites.back_default}`,
         /* For each stat the structure is: base stat, current stat, buff/debuff */
         hp: statsMap.hp,
         attack: statsMap.attack,
@@ -84,7 +85,7 @@ function cancelStatChanges(teamMemberKey) {
     const savedTeamMemberInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))[teamMemberKey]
     document.getElementById("teamMemberCard" + (teamMemberKey+1)).innerHTML = `
         <div class="imgContainer">
-            <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
+            <img src="${savedTeamMemberInfo.frontImageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
         </div>
         <div class="nameContainer">
             <p><strong>${savedTeamMemberInfo.name}</strong></p>
@@ -223,7 +224,7 @@ function displayPokemonSelection() {
         const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
         document.getElementById("teamMemberCard" + teamMemberIndex).innerHTML = `
             <div class="imgContainer">
-                <img src="${currentTeamData[j].imageURL}" alt="${currentTeamData[j].name + "Sprite"}">
+                <img src="${currentTeamData[j].frontImageURL}" alt="${currentTeamData[j].name + "Sprite"}">
             </div>
             <div class="nameContainer">
                 <p><strong>${currentTeamData[j].name}</strong></p>
@@ -293,8 +294,8 @@ function displayPokemonSelection() {
                         .then(data => {
                             document.getElementById("teamMemberCard" + clickEvent.target.id.slice(-1)).innerHTML = `
                                 <div class="imgContainer">
-                                    <img src="${`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}" alt="${newlySelectedTeamMember + "Sprite"}">
-                                </div>
+                                    <img src="${data.sprites.front_default}" alt="${newlySelectedTeamMember + "Sprite"}">
+                                    </div>
                                 <div class="nameContainer">
                                     <p><strong>${parseItem(newlySelectedTeamMember)}</strong></p>
                                 </div>
@@ -329,7 +330,8 @@ function initializeLocalStorage(teamKey) {
                 nickname: "N/A",
                 moves: [],
                 ability: "",
-                imageURL: "./media/missingno_sprite.png",
+                frontImageURL: "./media/missingno_sprite.png",
+                backImageURL: "./media/missingno_sprite.png",
                 /* For each stat the structure is: base stat, current stat, buff/debuff */
                 hp: [0, 0, 0],
                 attack: [0, 0, 0],

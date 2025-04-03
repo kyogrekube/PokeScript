@@ -17,7 +17,8 @@ function initializeLocalStorage(teamKey) {
                 nickname: "N/A",
                 moves: [],
                 ability: "",
-                imageURL: "./media/missingno_sprite.png",
+                frontImageURL: "./media/missingno_sprite.png",
+                backImageURL: "./media/missingno_sprite.png",
                 /* For each stat the structure is: base stat, current stat, buff/debuff */
                 hp: [0, 0, 0],
                 attack: [0, 0, 0],
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="teamMemberCardInner">
                     <div class="cardFront">
                         <div class="imgContainer">
-                            <img src="${savedTeamInfo[j]?.imageURL || './media/missingno_sprite.png'}" 
+                            <img src="${savedTeamInfo[j]?.frontImageURL || './media/missingno_sprite.png'}" 
                                  alt="${savedTeamInfo[j]?.nickname || 'Unknown'} Sprite">
                         </div>
                         <div class="nameContainer">
