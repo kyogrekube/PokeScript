@@ -1,7 +1,7 @@
 // Loads the action menu and any changes on it
 function loadActionMenu() {
     const container = document.getElementById("ActionMenu");
-    container.innerHTML = 
+    container.innerHTML = `
         <div class = "topInnerActionMenu">
             <button class = "actionMenuButton fight" id = "fightButton">FIGHT</button>
         </div>
@@ -13,7 +13,7 @@ function loadActionMenu() {
             <button class = "actionMenuButton pokemon" id = "pokemonButton">POKEMON</button>
             </div>
         </div>
-    ;
+    `;
 
     const fightBtn = document.getElementById("fightButton");
     const bagBtn = document.getElementById("bagButton");
@@ -36,3 +36,4 @@ document.addEventListener("DOMContentLoaded", () => {
     loadActionMenu();
     console.log(localStorage);
 });
+  
