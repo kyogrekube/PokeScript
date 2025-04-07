@@ -46,10 +46,14 @@ body, html {
 .centerBattleFrame {
     display: flex;
     background-color: white;
-    height: 100%;
     width: 80%;
-    position: space-evenly;
-    border: 4px solid black;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+    border-top: 4px solid black;
+    align-items: flex-end;
+    position: relative;
+    justify-content: space-between;
+    background-image: linear-gradient(to top, #d0f0ff, #ffffff); /* subtle battle background */
 }
 
 .rightTopOverviewBox {
@@ -202,4 +206,50 @@ body, html {
     background-color: black;
     border-radius: 50%;
     display: inline-block;
+}
+
+.enemyPokemonFrame {
+    top: 10%;
+    right: 10%;
+}
+
+.playerPokemonFrame {
+    bottom: 10%;
+    left: 10%;
+}
+
+.enemySprite, .playerSprite {
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.enemyPokemonFrame, .playerPokemonFrame {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.shadow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    z-index: 0;
+    filter: blur(2px);
+}
+
+.playerPokemonShadow {
+    bottom: 25%;
+}
+
+.enemyPokemonShadow {
+    bottom: 15%;
 }

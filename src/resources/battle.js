@@ -1,3 +1,25 @@
+// Displays the battle scene in the top center of the screen
+function loadBattleScene() {
+    const playerTeam = JSON.parse(localStorage.getItem("playerTeam"));
+    const enemyTeam = JSON.parse(localStorage.getItem("enemyTeam"));
+
+    const player = playerTeam.find(p => p.name !== "N/A");
+    const enemy = enemyTeam.find(p => p.name !== "N/A");
+
+    const battleFrame = document.querySelector(".centerBattleFrame");
+    battleFrame.innerHTML = `
+        <div class="enemyPokemonFrame">
+            <div class="shadow enemyPokemonShadow"></div>
+            <img src="${enemy.frontImageURL}" alt="${enemy.name}" class="enemySprite">
+        </div>
+        <div class="playerPokemonFrame">
+            <div class="shadow playerPokemonShadow"></div>
+            <img src="${player.backImageURL}" alt="${player.name}" class="playerSprite">
+        </div>
+    `;
+}
+
+// Displays team members in the dots on boht sides of the screen
 function loadTeamLineup() {
     const teams = [
         {
@@ -75,8 +97,8 @@ function loadActionMenu() {
     });
 }
 
+// Resets stats and move PP before battle
 function loadBattleInfo() {
-    // Ensure all team members have full move PP prior to battle
     const teams = ["playerTeam", "enemyTeam"];
     teams.forEach(teamKey => {
         const team = JSON.parse(localStorage.getItem(teamKey));
@@ -118,5 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBattleInfo();
     loadActionMenu();
     loadTeamLineup();
+    loadBattleScene();
 });
   
