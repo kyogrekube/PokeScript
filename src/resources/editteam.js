@@ -267,6 +267,14 @@ function initializeLocalStorage(teamKey) {
     }
 }
 
+async function randomizePokemonFetch(){
+
+}
+
+async function randomizePokemonGenerate(){
+
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     //localStorage.clear(); /* Here for testing purposes */
     console.log(localStorage);
