@@ -250,6 +250,70 @@ function displayPokemonSelection() {
     });
 }
 
+//Random integer function for use when implementing randomize pokemon
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+//Fetches the pokemon data from the API for randomization
+async function randomizePokemonFetch(){
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0");
+    const data = await response.json();
+    const randomPokemon = data.results[getRandomInt(data.results.length)];
+    const pokeData = await fetch(randomPokemon.url);
+    return await pokeData.json();
+}
+
+//Randomizes either the entire team or just a selected slot
+async function randomizePokemonGenerate(){
+    const pokemonData = await randomizePokemonFetch();
+
+    const name = parseItem(pokemonData.name);
+    const id = pokemonData.id;
+    const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+    //Randomize abilities
+    const abilities = pokemonData.abilities.map(a => parseItem(a.ability.name));
+    const ability = abilities[getRandomInt(abilities.length)];
+
+    //Randomize 1-4 moves of pokemon
+    const moves = pokemonData.moves.map(a => parseItem(a.move.name));
+    const moveCount = getRandomInt(4) + 1;
+    const selectedMoves = [];
+    while (selectedMoves.length < moveCount && moves.length > 0){
+        const idx = getRandomInt(moves.length);
+        const selected = moves.splice(idx, 1)[0];
+        selectedMoves.push(selected);
+    }
+
+    return{
+        name: name,
+        nickname: name,
+        moves:selectedMoves,
+        ability: ability,
+        imageURL: imageURL
+    };
+}
+
+async function randomizeSlot(teamMemberKey) {
+    const teamKey = localStorage.getItem("currentTeamKey");
+    const teamData = JSON.parse(localStorage.getItem(teamKey));
+    const newMember = await randomizePokemonGenerate();
+    teamData[teamMemberKey] = newMember;
+    localStorage.setItem(teamKey, JSON.stringify(teamData));
+    displayPokemonSelection();
+}
+
+async function randomizeEntireTeam(){
+    const teamKey = localStorage.getItem("currentTeamKey");
+    const newTeam = [];
+    for (let i = 0; i < 6; i++){
+        newTeam.push(await randomizePokemonGenerate());
+    }
+    localStorage.setItem(teamKey, JSON.stringify(newTeam));
+    displayPokemonSelection();
+}
+
 // Creates default/empty elements for each team member slot of the given team
 function initializeLocalStorage(teamKey) {
     if (localStorage.getItem(teamKey) === null) {
@@ -265,70 +329,6 @@ function initializeLocalStorage(teamKey) {
         }
         localStorage.setItem(teamKey, JSON.stringify(teamInfo));
     }
-}
-
-//Random integer function for use when implementing randomize pokemon
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
-//Fetches the pokemon data from the API for randomization
-async function randomizePokemonFetch(){
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0");
-    const data = await response.json();
-    const randomPokemon = data.results[getRandomInt(data.results.length)];
-    const pokeData = await fetch(randomPokemon.url);
-    return await pokeResponse.json();
-}
-
-//Randomizes either the entire team or just a selected slot
-async function randomizePokemonGenerate(){
-    const pokemonData = await getRandomPokemonData();
-
-    const name = parseItem(pokemonData.name);
-    const id = pokemonData.id;
-    const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-
-    //Randomize abilities
-    const abilities = pokemonData.abilities.map(a => parseItem(a.ability.name));
-    const ability = abilities[getRandomInt(abilities.lenght)];
-
-    //Randomize 1-4 moves of pokemon
-    const moves = pokemonData.moves.map(a => parseItem(a.move.name));
-    const moveCount = getRandomInt(4) + 1;
-    const selectedMoves = [];
-    while (selectedMoves.length < moveCount && moves.length > 0){
-        const idx = getRandomInt(moves.length);
-        const selected = moves.splice(idx, 1)[0];
-        slectedMoves.push(selected);
-    }
-
-    return{
-        name: name,
-        nickname: name,
-        moves:selectedMoves,
-        ability: ability,
-        imageURL: imageURL
-    };
-}
-
-async function randomizeSlot(teamMemberKey) {
-    const teamkey = localStorage.getItem("currentTeamKey");
-    const teamData = JSON.parse(localStorage.getItem(teamKey));
-    const newMember = await generateRandomTeamMember();
-    teamData[teamMemberKey] = newMember;
-    localStorage.setItem(teamKey, JSON.stringify(teamData));
-    displayPokemonSelection();
-}
-
-async function randomizeEntireTeam(){
-    const teamKey = localStorage.getItem("currentTeamKey");
-    const newTeam = [];
-    for (let i = 0; i < 6; i++){
-        newTeam.push(await generateRandomTeamMember());
-    }
-    localStorage.setItem(teamKey, JSON.stringify(newTeam));
-    displayPokemonSelection();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
