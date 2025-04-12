@@ -289,8 +289,20 @@ async function randomizePokemonGenerate(){
     const id = pokemonData.id;
     const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
+    //Randomize abilities
     const abilities = pokemonData.abilities.map(a => parseItem(a.ability.name));
-    
+    const ability = abilities[getRandomInt(abilities.lenght)];
+
+    //Randomize 1-4 moves of pokemon
+    const moves = pokemonData.moves.map(a => parseItem(a.move.name));
+    const moveCount = getRandomInt(4) + 1;
+    const selectedMoves = [];
+    while (selectedMoves.length < moveCount && moves.length > 0){
+        const idx = getRandomInt(moves.length);
+        const selected = moves.splice(idx, 1)[0];
+        slectedMoves.push(selected);
+    }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
