@@ -336,4 +336,18 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(localStorage);
     initializeLocalStorage(localStorage.getItem("currentTeamKey"));
     displayPokemonSelection();
+
+    document.getElementById("randomizeEntireTeam").addEventListener("click", async () => {
+        await randomizeEntireTeam();
+    });
+    
+    document.getElementById("randomizeSelectedPokemon").addEventListener("click", async () => {
+        const selectedSlot = prompt("Enter the team slot (1-6) to randomize:");
+        const slotNumber = parseInt(selectedSlot);
+        if (slotNumber >= 1 && slotNumber <= 6) {
+            await randomizeSlot(slotNumber - 1);
+        } else {
+            alert("Invalid slot number!");
+        }
+    });
 });
