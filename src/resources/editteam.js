@@ -267,10 +267,20 @@ function initializeLocalStorage(teamKey) {
     }
 }
 
-async function randomizePokemonFetch(){
-
+//Random integer function for use when implementing randomize pokemon
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
+//Fetches the pokemon data from the API for randomization
+async function randomizePokemonFetch(){
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0");
+    const data = await response.json();
+    const randomPokemon = data.results[getRandomInt(data.results.length)];
+    
+}
+
+//Randomizes either the entire team or just a selected slot
 async function randomizePokemonGenerate(){
 
 }
