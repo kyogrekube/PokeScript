@@ -303,6 +303,20 @@ async function randomizePokemonGenerate(){
         slectedMoves.push(selected);
     }
 
+    return{
+        name: name,
+        nickname: name,
+        moves:selectedMoves,
+        ability: ability,
+        imageURL: imageURL
+    };
+}
+
+async function randomizeSlot(teamMemberKey) {
+}
+
+async function randomizeEntireTeam(){
+    
 }
 
 document.addEventListener("DOMContentLoaded", () => {
