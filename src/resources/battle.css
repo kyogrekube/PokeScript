@@ -375,9 +375,8 @@ body, html {
 }
 
 .backButtonInMoves {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    align-self: flex-end;
+    margin-top: auto;
     width: 100px;
     height: 50px;
     font-size: 1em;
@@ -392,4 +391,71 @@ body, html {
 
 .backButtonInMoves:hover {
     transform: scale(1.05);
+}
+
+.pokemonGridContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.pokemonGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    flex-grow: 1;
+}
+
+.pokemonSlot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: 3px solid black;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.pokemonSlot img {
+    width: 70px;
+    height: 70px;
+    margin: 4px 0;
+}
+
+.pokeName {
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+.pokeStats {
+    font-size: 0.9em;
+}
+
+.fainted {
+    background-color: #ddd;
+    opacity: 0.6;
+}
+
+.pokeLevel {
+    font-size: 0.8em;
+    margin-top: 2px;
+}
+
+.smallHPBar {
+    width: 80px;
+    height: 6px;
+    margin-top: 2px;
+}
+
+.smallHPFraction {
+    font-size: 0.75em;
+    margin-top: 1px;
 }

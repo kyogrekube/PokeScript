@@ -1,3 +1,16 @@
+// Changes the color of the hp bar based on the available hp of the current team member
+function getHPColor(hpRatio) {
+    if (hpRatio > 0.5) {
+        return '#3ec45e';
+    }
+    else if (hpRatio > 0.2) {
+        return '#f1c232';
+    }
+    else {
+        return '#e74c3c'
+    }
+}
+
 // Displays the battle scene in the top center of the screen
 function loadBattleScene() {
     const playerTeam = JSON.parse(localStorage.getItem("playerTeam"));
@@ -5,19 +18,6 @@ function loadBattleScene() {
     const player = playerTeam.find(p => p.name !== "N/A");
     const enemy = enemyTeam.find(p => p.name !== "N/A");
     const battleFrame = document.querySelector(".centerBattleFrame");
-
-    // Changes the color of the hp bar based on the available hp of the current team member
-    function getHPColor(hpRatio) {
-        if (hpRatio > 0.5) {
-            return '#3ec45e';
-        }
-        else if (hpRatio > 0.2) {
-            return '#f1c232';
-        }
-        else {
-            return '#e74c3c'
-        }
-    }
     
     // Calculate hp ratios
     const playerHpRatio = player.hp[1] / player.hp[0];
@@ -145,7 +145,43 @@ function loadActionMenu() {
     });
 
     pokemonBtn.addEventListener("click", () => {
-        alert("Currently under development!");
+        const container = document.getElementById("ActionMenu");
+        let team = JSON.parse(localStorage.getItem("playerTeam"));
+    
+        // Sort team: real Pokémon first, then "N/A"
+        team.sort((a, b) => {
+            if (a.name === "N/A" && b.name !== "N/A") return 1;
+            if (a.name !== "N/A" && b.name === "N/A") return -1;
+            return 0;
+        });
+    
+        container.innerHTML = `
+            <div class="pokemonGridContainer">
+                <div class="pokemonGrid">
+                    ${team.map(p => {
+                        if (p.name === "N/A") {
+                            return `
+                                <div class="pokemonSlot fainted"></div>
+                            `;
+                        }
+    
+                        const hpRatio = p.hp[1] / p.hp[0];
+                        return `
+                            <div class="pokemonSlot ${p.hp[1] <= 0 ? 'fainted' : ''}">
+                                <span class="pokeName">${p.nickname || p.name}</span>
+                                <img src="${p.frontImageURL}" alt="${p.name}">
+                                <div class="hpOuterBar smallHPBar">
+                                    <div class="hpInnerBar" style="width: ${hpRatio * 100}%; background-color: ${getHPColor(hpRatio)};"></div>
+                                </div>
+                                <div class="hpFraction smallHPFraction">${p.hp[1]} / ${p.hp[0]}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <button class="backButtonInMoves" id="backToAction">Back</button>
+            </div>
+        `;
+        document.getElementById("backToAction").addEventListener("click", loadActionMenu);
     });
 }
 
