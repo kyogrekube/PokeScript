@@ -277,12 +277,20 @@ async function randomizePokemonFetch(){
     const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0");
     const data = await response.json();
     const randomPokemon = data.results[getRandomInt(data.results.length)];
-    
+    const pokeData = await fetch(randomPokemon.url);
+    return await pokeResponse.json();
 }
 
 //Randomizes either the entire team or just a selected slot
 async function randomizePokemonGenerate(){
+    const pokemonData = await getRandomPokemonData();
 
+    const name = parseItem(pokemonData.name);
+    const id = pokemonData.id;
+    const imageURL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+    const abilities = pokemonData.abilities.map(a => parseItem(a.ability.name));
+    
 }
 
 document.addEventListener("DOMContentLoaded", () => {
