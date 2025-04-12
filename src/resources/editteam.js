@@ -313,10 +313,22 @@ async function randomizePokemonGenerate(){
 }
 
 async function randomizeSlot(teamMemberKey) {
+    const teamkey = localStorage.getItem("currentTeamKey");
+    const teamData = JSON.parse(localStorage.getItem(teamKey));
+    const newMember = await generateRandomTeamMember();
+    teamData[teamMemberKey] = newMember;
+    localStorage.setItem(teamKey, JSON.stringify(teamData));
+    displayPokemonSelection();
 }
 
 async function randomizeEntireTeam(){
-    
+    const teamKey = localStorage.getItem("currentTeamKey");
+    const newTeam = [];
+    for (let i = 0; i < 6; i++){
+        newTeam.push(await generateRandomTeamMember());
+    }
+    localStorage.setItem(teamKey, JSON.stringify(newTeam));
+    displayPokemonSelection();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
