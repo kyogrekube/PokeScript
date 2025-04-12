@@ -175,9 +175,9 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         const fetchPromises = Array.from(selectedMoves).map(async (checkbox) => {
             const response = await fetch(`https://pokeapi.co/api/v2/move/${checkbox.value}/`);
             const moveData = await response.json();
-            // Inner array contains the move name, move power, move accuracy, move pp, and move pp
+            // Inner array contains the move name, move power, move accuracy, move pp, move pp, and the move's type
             // First move pp will track total pp for the move and 2nd will track remaining pp in battle page
-            return [checkbox.value, moveData.power, moveData.accuracy, moveData.pp, moveData.pp];
+            return [checkbox.value, moveData.power, moveData.accuracy, moveData.pp, moveData.pp, moveData.type.name];
         });
 
         selectedMovesArray = await Promise.all(fetchPromises);

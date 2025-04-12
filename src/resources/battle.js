@@ -2,20 +2,50 @@
 function loadBattleScene() {
     const playerTeam = JSON.parse(localStorage.getItem("playerTeam"));
     const enemyTeam = JSON.parse(localStorage.getItem("enemyTeam"));
-
     const player = playerTeam.find(p => p.name !== "N/A");
     const enemy = enemyTeam.find(p => p.name !== "N/A");
-
     const battleFrame = document.querySelector(".centerBattleFrame");
+
+    // Changes the color of the hp bar based on the available hp of the current team member
+    function getHPColor(hpRatio) {
+        if (hpRatio > 0.5) {
+            return '#3ec45e';
+        }
+        else if (hpRatio > 0.2) {
+            return '#f1c232';
+        }
+        else {
+            return '#e74c3c'
+        }
+    }
+    
+    // Calculate hp ratios
+    const playerHpRatio = player.hp[1] / player.hp[0];
+    const enemyHpRatio = enemy.hp[1] / enemy.hp[0];
+    
+    // Adds the display for the battle frame for the enemy pokemon and then the player pokemon
     battleFrame.innerHTML = `
-        <div class="enemyPokemonFrame">
-            <div class="shadow enemyPokemonShadow"></div>
-            <img src="${enemy.frontImageURL}" alt="${enemy.name}" class="enemySprite">
+      <div class="enemyPokemonFrame">
+        <div class="enemyUI">
+          <span class="pokeName">${enemy.name}</span>
+          <div class="hpOuterBar">
+            <div class="hpInnerBar" style="width: ${enemyHpRatio * 100}%; background-color: ${getHPColor(enemyHpRatio)};"></div>
+          </div>
         </div>
-        <div class="playerPokemonFrame">
-            <div class="shadow playerPokemonShadow"></div>
-            <img src="${player.backImageURL}" alt="${player.name}" class="playerSprite">
+        <div class="shadow enemyPokemonShadow"></div>
+        <img src="${enemy.frontImageURL}" alt="${enemy.name}" class="enemySprite">
+      </div>
+      <div class="playerPokemonFrame">
+        <div class="shadow playerPokemonShadow"></div>
+        <img src="${player.backImageURL}" alt="${player.name}" class="playerSprite">
+        <div class="playerUI">
+          <span class="pokeName">${player.name}</span>
+          <div class="hpOuterBar">
+            <div class="hpInnerBar" style="width: ${playerHpRatio * 100}%; background-color: ${getHPColor(playerHpRatio)};"></div>
+          </div>
+          <span class="hpFraction">${player.hp[1]} / ${player.hp[0]}</span>
         </div>
+      </div>
     `;
 }
 
@@ -85,8 +115,30 @@ function loadActionMenu() {
     const pokemonBtn = document.getElementById("pokemonButton");
 
     fightBtn.addEventListener("click", () => {
-        alert("Currently under development!");
-    });
+        const container = document.getElementById("ActionMenu");
+        const currentPokemon = JSON.parse(localStorage.getItem("playerTeam")).find(p => p.name !== "N/A");
+        const moves = currentPokemon.moves.slice(0, 4); // up to 4 moves
+    
+        container.innerHTML = `
+            <div class="moveGridContainer">
+                <div class="moveGrid">
+                    ${moves.map((move) => `
+                        <div class="moveButton ${move[5].toLowerCase()}">
+                            <div class="moveName">${move[0]}</div>
+                            <div class="moveDetails">
+                                <span class="moveType">${move[5].toUpperCase()}</span>
+                                <span class="pp">PP ${move[4]} / ${move[3]}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="backButtonInMoves" id="backToAction">Back</button>
+            </div>
+        `;
+    
+        document.getElementById("backToAction").addEventListener("click", loadActionMenu);
+    });    
+    
 
     bagBtn.addEventListener("click", () => {
         alert("Currently under development!");
@@ -136,10 +188,10 @@ function loadBattleInfo() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log(localStorage);
     loadBattleInfo();
     loadActionMenu();
     loadTeamLineup();
     loadBattleScene();
+    console.log(localStorage);
 });
   
