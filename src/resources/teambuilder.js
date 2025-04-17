@@ -17,7 +17,17 @@ function initializeLocalStorage(teamKey) {
                 nickname: "N/A",
                 moves: [],
                 ability: "",
-                imageURL: "./media/missingno_sprite.png"
+                frontImageURL: "./media/missingno_sprite.png",
+                backImageURL: "./media/missingno_sprite.png",
+                /* For each stat the structure is: base stat, current stat, buff/debuff */
+                hp: [0, 0, 0],
+                attack: [0, 0, 0],
+                specialAttack: [0, 0, 0],
+                defense: [0, 0, 0],
+                specialDefense: [0, 0, 0],
+                speed: [0, 0, 0],
+                evasion: [100, 100, 0],
+                accuracy: [100, 100, 0]
             });
         }
         localStorage.setItem(teamKey, JSON.stringify(teamInfo));
@@ -40,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="teamMemberCardInner">
                     <div class="cardFront">
                         <div class="imgContainer">
-                            <img src="${savedTeamInfo[j]?.imageURL || './media/missingno_sprite.png'}" 
+                            <img src="${savedTeamInfo[j]?.frontImageURL || './media/missingno_sprite.png'}" 
                                  alt="${savedTeamInfo[j]?.nickname || 'Unknown'} Sprite">
                         </div>
                         <div class="nameContainer">
@@ -51,13 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p><strong>Ability:</strong></p>
                         <p>${savedTeamInfo[j]?.ability || "N/A"}</p>
                         <p><strong>Move 1:</strong></p>
-                        <p>${savedTeamInfo[j]?.moves?.[0] || "N/A"}</p>
+                        <p>${savedTeamInfo[j]?.moves?.[0]?.[0] || "N/A"}</p>
                         <p><strong>Move 2:</strong></p>
-                        <p>${savedTeamInfo[j]?.moves?.[1] || "N/A"}</p>
+                        <p>${savedTeamInfo[j]?.moves?.[1]?.[0] || "N/A"}</p>
                         <p><strong>Move 3:</strong></p>
-                        <p>${savedTeamInfo[j]?.moves?.[2] || "N/A"}</p>
+                        <p>${savedTeamInfo[j]?.moves?.[2]?.[0] || "N/A"}</p>
                         <p><strong>Move 4:</strong></p>
-                        <p>${savedTeamInfo[j]?.moves?.[3] || "N/A"}</p>
+                        <p>${savedTeamInfo[j]?.moves?.[3]?.[0] || "N/A"}</p>
                     </div>
                 </div>
             `;

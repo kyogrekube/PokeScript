@@ -9,12 +9,57 @@ function saveStatChanges(teamMemberKey, selectedMovesArray, selectedAbilityHolde
     const newStatsContainer = document.querySelector(".newStatsContainer");
     changeStatsContainer.innerHTML = "";
     newStatsContainer.innerHTML = "";
+
+    // Holds stats to fetch
+    const statLookup = {
+        hp: "hp",
+        attack: "attack",
+        specialAttack: "special-attack",
+        defense: "defense",
+        specialDefense: "special-defense",
+        speed: "speed"
+    };
+    
+    // Holds actual stats
+    const statsMap = {
+        hp: [],
+        attack: [],
+        specialAttack: [],
+        defense: [],
+        specialDefense: [],
+        speed: []
+    };
+    
+    // Fill statsMap with actual stat values
+    data.stats.forEach(stat => {
+        const name = stat.stat.name;
+        const value = stat.base_stat;
+    
+        for (const key in statLookup) {
+            if (statLookup[key] === name) {
+                statsMap[key] = [value, value, 0]; // base stat, current stat, buff/debuff
+            }
+        }
+    });
+
+    // Populates team member info to save
     const newTeamMemberInfo = {
         name: newlySelectedTeamMember,
         nickname: parseItem(newlySelectedTeamMember),
         moves: selectedMovesArray,
         ability: selectedAbilityHolder,
-        imageURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`
+        frontImageURL: `${data.sprites.front_default}`,
+        backImageURL: `${data.sprites.back_default}`,
+        /* For each stat the structure is: base stat, current stat, buff/debuff */
+        hp: statsMap.hp,
+        attack: statsMap.attack,
+        specialAttack: statsMap.specialAttack,
+        defense: statsMap.defense,
+        specialDefense: statsMap.specialDefense,
+        speed: statsMap.speed,
+        /* Base evasion and accurate are always 100 */
+        evasion: [100, 100, 0],
+        accuracy: [100, 100, 0]
     };
     // Takes entire saved team and replaces the currently selected team member's stats
     const savedTeamInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))
@@ -40,7 +85,7 @@ function cancelStatChanges(teamMemberKey) {
     const savedTeamMemberInfo = JSON.parse(localStorage.getItem(localStorage.getItem("currentTeamKey")))[teamMemberKey]
     document.getElementById("teamMemberCard" + (teamMemberKey+1)).innerHTML = `
         <div class="imgContainer">
-            <img src="${savedTeamMemberInfo.imageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
+            <img src="${savedTeamMemberInfo.frontImageURL}" alt="${savedTeamMemberInfo.name + "Sprite"}">
         </div>
         <div class="nameContainer">
             <p><strong>${savedTeamMemberInfo.name}</strong></p>
@@ -93,7 +138,9 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         checkBoxOption.innerHTML = `
             <input type="checkbox" class="moveCheckbox" value="${moveNickname}">
             <label>${moveNickname}</label>
+            <!--<button class="infoButton" label="${moveNickname}" style="margin-left: 8px;">ℹ️</button>-->
         `;
+        // UNCOMMENT HTML LINE WHEN THIS FEATURE IS ADDED
         possibleMovesContainer.appendChild(checkBoxOption);
     });
 
@@ -105,7 +152,9 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
         checkBoxOption.innerHTML = `
             <input type="checkbox" class="abilityCheckbox" value="${abilityNickname}">
             <label>${abilityNickname}</label>
+            <!--<button class="infoButton" label="${abilityNickname}" style="margin-left: 8px;">ℹ️</button>-->
         `;
+        // UNCOMMENT HTML LINE WHEN THIS FEATURE IS ADDED
         possibleAbilitiesContainer.appendChild(checkBoxOption);
     });
 
@@ -114,14 +163,28 @@ function displayMovesetAndAbilitySelection(teamMemberKey, newlySelectedTeamMembe
     let selectedAbilityHolder = "";
 
     // Prevents users from selecting more than 4 moves at once
-    document.getElementById("possibleMovesContainer").addEventListener("change", (event) => {
+    document.getElementById("possibleMovesContainer").addEventListener("change", async (event) => {
         const selectedMoves = document.querySelectorAll("#possibleMovesContainer .moveCheckbox:checked");
         if (selectedMoves.length > 4) {
             alert("A pokemon may only have up to 4 moves");
             event.target.checked = false;
-        }    
-        selectedMovesArray = Array.from(selectedMoves).map(move => move.value);
+            return;
+        }
+
+        // Wait for all move fetches to complete before updating selectedMovesArray
+        const fetchPromises = Array.from(selectedMoves).map(async (checkbox) => {
+            const response = await fetch(`https://pokeapi.co/api/v2/move/${checkbox.value}/`);
+            const moveData = await response.json();
+            // Inner array contains the move name, move power, move accuracy, move pp, move pp, and the move's type
+            // First move pp will track total pp for the move and 2nd will track remaining pp in battle page
+            return [checkbox.value, moveData.power, moveData.accuracy, moveData.pp, moveData.pp, moveData.type.name];
+        });
+
+        selectedMovesArray = await Promise.all(fetchPromises);
     });
+  
+
+
     // Prevents users from selecting more than 1 ability at once
     document.getElementById("possibleAbilitiesContainer").addEventListener("change", (event) => {
         const selectedAbility = document.querySelectorAll("#possibleAbilitiesContainer .abilityCheckbox:checked");
@@ -161,7 +224,7 @@ function displayPokemonSelection() {
         const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
         document.getElementById("teamMemberCard" + teamMemberIndex).innerHTML = `
             <div class="imgContainer">
-                <img src="${currentTeamData[j].imageURL}" alt="${currentTeamData[j].name + "Sprite"}">
+                <img src="${currentTeamData[j].frontImageURL}" alt="${currentTeamData[j].name + "Sprite"}">
             </div>
             <div class="nameContainer">
                 <p><strong>${currentTeamData[j].name}</strong></p>
@@ -178,7 +241,7 @@ function displayPokemonSelection() {
         teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p><strong>Moveset:</strong></p>`;
         for (let i = 0; i < 4; i++) {
             if (i < currentTeamData[j].moves.length) {
-                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].moves[i]}</p>`;
+                teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + `<p>${currentTeamData[j].moves[i][0]}</p>`;
             } 
             else {
                 teamMemberStatsContainer.innerHTML = teamMemberStatsContainer.innerHTML + "<p>N/A</p>";
@@ -231,14 +294,21 @@ function displayPokemonSelection() {
                         .then(data => {
                             document.getElementById("teamMemberCard" + clickEvent.target.id.slice(-1)).innerHTML = `
                                 <div class="imgContainer">
-                                    <img src="${`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}" alt="${newlySelectedTeamMember + "Sprite"}">
-                                </div>
+                                    <img src="${data.sprites.front_default}" alt="${newlySelectedTeamMember + "Sprite"}">
+                                    </div>
                                 <div class="nameContainer">
                                     <p><strong>${parseItem(newlySelectedTeamMember)}</strong></p>
                                 </div>
                             `;
                             document.getElementById("editStatsButtonID").addEventListener("click", () => {
                                 displayMovesetAndAbilitySelection(clickEvent.target.id.slice(-1)-1, newlySelectedTeamMember, data);
+                                // Event listener to activate when info button is clicked
+                                /*document.addEventListener("click", function(event) {
+                                    if (event.target.classList.contains("infoButton")) {
+                                        const item = event.target.getAttribute("label");
+                                        alert(`More info about ${item} will go here.`);
+                                    }
+                                });*/
                             });
                     });
                 }
@@ -324,7 +394,17 @@ function initializeLocalStorage(teamKey) {
                 nickname: "N/A",
                 moves: [],
                 ability: "",
-                imageURL: "./media/missingno_sprite.png"
+                frontImageURL: "./media/missingno_sprite.png",
+                backImageURL: "./media/missingno_sprite.png",
+                /* For each stat the structure is: base stat, current stat, buff/debuff */
+                hp: [0, 0, 0],
+                attack: [0, 0, 0],
+                specialAttack: [0, 0, 0],
+                defense: [0, 0, 0],
+                specialDefense: [0, 0, 0],
+                speed: [0, 0, 0],
+                evasion: [100, 100, 0],
+                accuracy: [100, 100, 0]
             });
         }
         localStorage.setItem(teamKey, JSON.stringify(teamInfo));
