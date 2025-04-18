@@ -396,6 +396,13 @@ async function randomizeEntireTeam(){
     }
     localStorage.setItem(teamKey, JSON.stringify(newTeam));
     displayPokemonSelection();
+    // Flash all 6 cards individually
+    for (let i = 0; i < 6; i++) {
+        const card = document.getElementById("teamMemberCard" + (i + 1));
+        card.classList.remove("flash-animate");
+        void card.offsetWidth;
+        card.classList.add("flash-animate");
+    }
 }
 
 // Creates default/empty elements for each team member slot of the given team
