@@ -230,6 +230,13 @@ body, html {
     font-size: 130%;
 }
 
+.randomizeButtonsContainer{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+}
+
 .infoButton {
     background: none;
     border: none;
@@ -242,4 +249,28 @@ body, html {
 
 .infoButton:hover {
     opacity: 0.7;
+}
+
+/* Shuffle animation for when pokemon are randomized */
+@keyframes shuffle {
+    0%   { transform: translateY(0); }
+    25%  { transform: translateY(-10px); }
+    50%  { transform: translateY(10px); }
+    75%  { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.shuffle-animate {
+    animation: shuffle 0.6s ease-in-out;
+}
+
+/* Flash animation that triggers only on randomized pokemon slots */
+@keyframes flash {
+    0%   { background-color: yellow; }
+    50%  { background-color: white; }
+    100% { background-color: yellow; }
+}
+
+.flash-animate {
+    animation: flash 0.5s ease-in-out;
 }
