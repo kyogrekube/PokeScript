@@ -381,6 +381,11 @@ async function randomizeSlot(teamMemberKey) {
     teamData[teamMemberKey] = newMember;
     localStorage.setItem(teamKey, JSON.stringify(teamData));
     displayPokemonSelection();
+    // Flash effect only on updated slot
+    const card = document.getElementById("teamMemberCard" + (teamMemberKey + 1));
+    card.classList.remove("flash-animate");
+    void card.offsetWidth;
+    card.classList.add("flash-animate");
 }
 
 async function randomizeEntireTeam(){

@@ -263,3 +263,14 @@ body, html {
 .shuffle-animate {
     animation: shuffle 0.6s ease-in-out;
 }
+
+/* Flash animation that triggers only on randomized pokemon slots */
+@keyframes flash {
+    0%   { background-color: yellow; }
+    50%  { background-color: white; }
+    100% { background-color: yellow; }
+}
+
+.flash-animate {
+    animation: flash 0.5s ease-in-out;
+}
