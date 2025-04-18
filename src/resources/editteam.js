@@ -222,6 +222,15 @@ function displayPokemonSelection() {
     for (let j = 0; j < 6; j++) {
         const teamMemberIndex = j + 1
         const teamMemberStatsContainer = document.getElementById("teamMemberStatsContainer" + teamMemberIndex);
+        const card = document.getElementById("teamMemberCard" + teamMemberIndex);
+
+        // Remove old animation class if it exists (for re-triggering)
+        card.classList.remove("shuffle-animate");
+        // Trigger reflow (forces DOM update so animation re-triggers)
+        void card.offsetWidth;
+        // Add the animation class
+        card.classList.add("shuffle-animate");
+
         document.getElementById("teamMemberCard" + teamMemberIndex).innerHTML = `
             <div class="imgContainer">
                 <img src="${currentTeamData[j].frontImageURL}" alt="${currentTeamData[j].name + "Sprite"}">
